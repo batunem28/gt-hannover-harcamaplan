@@ -11,8 +11,14 @@
   --ink: #141614;         /* Asphalt */
   --ink-soft: #545c56;
   --line: #d8d0c1;
-  --primary: #0B3D2E;     /* Eilenriede */
-  --on-primary: #F4EFE6;
+  --primary: #009872;     /* IGMG Grün für alle Hauptknöpfe */
+  --on-primary: #ffffff;
+  --hero-bg: #0B3D2E;     /* Eilenriede */
+  --hero-fg: #F4EFE6;
+  --hero-soft: rgba(244, 239, 230, .82);
+  --hero-line: rgba(244, 239, 230, .28);
+  --hero-cta: #8DCDBE;    /* Minze */
+  --on-hero-cta: #0B3D2E;
   --accent: #009872;      /* IGMG Grün */
   --accent-soft: rgba(0, 152, 114, .11);
   --on-accent: #ffffff;
@@ -261,8 +267,12 @@ tr.gesamt td { font-weight: 600; border-bottom: 2px solid var(--ink); }
   transition: transform .12s, background-color .15s, border-color .15s;
 }
 .btn:active { transform: scale(.98); }
-.btn-primary { background: var(--primary); color: var(--on-primary); }
-.btn-primary:hover { background: color-mix(in srgb, var(--primary) 88%, var(--ink)); }
+.btn-primary {
+  background: var(--primary); color: var(--on-primary);
+  font-size: 1.1875rem; font-weight: 700; min-height: 54px;
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--primary) 70%, #000);
+}
+.btn-primary:hover { background: color-mix(in srgb, var(--primary) 88%, #000); }
 .btn-ghost { background: transparent; border-color: var(--line); color: var(--ink); }
 .btn-ghost:hover { border-color: var(--ink-soft); }
 .btn-text { background: transparent; color: var(--ink-soft); padding: 0 8px; }
@@ -271,6 +281,38 @@ tr.gesamt td { font-weight: 600; border-bottom: 2px solid var(--ink); }
 .datei { font-family: var(--font-mono); font-size: 13.5px; overflow-wrap: anywhere; color: var(--ink-soft); }
 .schritte { margin: 0; padding-left: 1.3em; display: grid; gap: 8px; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Startseite */
+.hero {
+  position: relative; overflow: hidden; display: grid; gap: 16px;
+  background: var(--hero-bg); color: var(--hero-fg);
+  border-radius: 18px; padding: 26px 20px 22px;
+}
+.hero::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; background: var(--thread);
+}
+.hero .eyebrow { color: var(--hero-cta); }
+.hero .lead { color: var(--hero-soft); }
+.hero .facts li { border-color: var(--hero-line); color: var(--hero-soft); }
+.hero .btn-text { color: var(--hero-soft); }
+.hero .btn-text:hover { color: var(--hero-fg); }
+.entwurf { margin: 0; color: var(--hero-soft); font-size: 15px; }
+.entwurf strong { color: var(--hero-fg); }
+.btn-hero {
+  width: 100%; min-height: 58px; font-size: 1.25rem; font-weight: 700;
+  background: var(--hero-cta); color: var(--on-hero-cta);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, .25);
+}
+.btn-hero:hover { background: color-mix(in srgb, var(--hero-cta) 85%, #fff); }
+.btn-hero-ghost { background: transparent; color: var(--hero-fg); border-color: var(--hero-line); }
+@media (min-width: 560px) {
+  .hero { padding: 34px 32px 30px; }
+  .btn-hero { width: auto; justify-self: start; padding: 0 32px; }
+}
+.nebenbei { display: grid; gap: 6px; font-size: 15px; color: var(--ink-soft); }
+.nebenbei p { margin: 0; }
+.nebenbei strong { color: var(--ink); }
+.nebenbei .linkbtn { justify-self: start; font-size: 15px; margin-top: 2px; }
 
 .absender {
   font-family: var(--font-mono); font-size: 12px; letter-spacing: .04em; color: var(--ink-soft);
@@ -283,6 +325,7 @@ tr.gesamt td { font-weight: 600; border-bottom: 2px solid var(--ink); }
   background: color-mix(in srgb, var(--bg) 92%, transparent);
   backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   border-top: 1px solid var(--line);
+  box-shadow: 0 -6px 20px rgba(0, 0, 0, .07);
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 .nav .wrap { display: flex; gap: 10px; padding-block: 12px; }
@@ -587,6 +630,11 @@ function weiter() {
   const l = schritte(); const i = l.indexOf(schritt);
   if (i < l.length - 1) gehe(l[i + 1]);
 }
+function starte() {
+  const s = window.__gespeicherterSchritt;
+  if (entwurfZeit && hatInhalt() && s && s !== "start" && schritte().includes(s)) return gehe(s);
+  weiter();
+}
 function zurueck() {
   const l = schritte(); const i = l.indexOf(schritt);
   if (i > 0) gehe(l[i - 1]);
@@ -642,10 +690,9 @@ function kopfInfo() {
   $("#zurueck").hidden = i === 0;
   const wbtn = $("#weiter");
   wbtn.hidden = schritt === "fertig";
-  wbtn.textContent = schritt === "start" ? (entwurfZeit && hatInhalt() ? "Weitermachen" : "Los geht’s")
-    : schritt === "kategorien" && !st.kat.length ? "Ohne Ausgaben weiter"
+  wbtn.textContent = schritt === "kategorien" && !st.kat.length ? "Ohne Ausgaben weiter"
     : schritt === "uebersicht" ? "Datei erstellen" : "Weiter";
-  nav.hidden = false;
+  nav.hidden = schritt === "start";
 }
 
 function aktualisiereSummen() {
@@ -667,24 +714,25 @@ const BILDSCHIRME = {
     const entwurf = entwurfZeit && hatInhalt();
     const wann = entwurf ? new Date(entwurfZeit).toLocaleString("de-DE", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }) : "";
     return `
-      <p class="eyebrow">Bilanzierung und Checkliste zur Budget-Freigabe</p>
-      <h1>Harcamaplan</h1>
-      <p class="lead">Plane das Budget für euer Programm oder rechne es danach ab. Du beantwortest ein paar einfache Fragen, die Summen rechnen sich von selbst. Am Ende bekommst du die fertige Excel-Datei im offiziellen Format.</p>
-      <ul class="facts"><li>ca. 5 Minuten</li><li>Entwurf wird automatisch gemerkt</li><li>Offizielle Excel-Vorlage</li></ul>
-      ${entwurf ? `
-        <div class="card akzent">
-          <h3>Du hast einen angefangenen Plan</h3>
-          <p class="hint">${esc(st.programm || "Ohne Namen")}${st.modus ? " · " + (st.modus === "ist" ? "Abrechnung" : "Planung") : ""} · zuletzt bearbeitet ${esc(wann)}</p>
+      <section class="hero">
+        <p class="eyebrow">Budget-Freigabe für eure Programme</p>
+        <h1>Harcamaplan</h1>
+        <p class="lead">Plane das Budget für euer Programm oder rechne es danach ab. Du beantwortest ein paar einfache Fragen, die Summen rechnen sich von selbst. Am Ende bekommst du die fertige Excel-Datei im offiziellen Format.</p>
+        <ul class="facts"><li>ca. 5 Minuten</li><li>ohne Anmeldung</li><li>Entwurf wird gemerkt</li></ul>
+        ${entwurf ? `
+          <p class="entwurf">Angefangen: <strong>${esc(st.programm || "Plan ohne Namen")}</strong>${st.modus ? " · " + (st.modus === "ist" ? "Abrechnung" : "Planung") : ""} · zuletzt ${esc(wann)}</p>
+          <button class="btn btn-hero" type="button" data-aktion="start">Weitermachen <span aria-hidden="true">→</span></button>
           <div class="btnrow">
             ${neuBestaetigen
-              ? `<span class="hint">Der angefangene Plan wird gelöscht.</span><button class="btn btn-ghost" type="button" data-aktion="neu-ja">Ja, neu anfangen</button><button class="btn btn-text" type="button" data-aktion="neu-nein">Abbrechen</button>`
-              : `<button class="btn btn-text" type="button" data-aktion="neu">Stattdessen neu anfangen</button>`}
-          </div>
-        </div>` : ""}
-      <div class="card">
-        <h3>Du hast schon eine Harcama-Datei?</h3>
-        <p class="hint">Zum Beispiel deine Planung von vor dem Programm. Öffne sie hier, um sie zu ändern oder die Abrechnung zu ergänzen.</p>
-        <div class="btnrow"><button class="btn btn-ghost" type="button" data-aktion="oeffnen">Excel-Datei öffnen</button></div>
+              ? `<span class="entwurf">Der angefangene Plan wird gelöscht.</span><button class="btn btn-hero-ghost" type="button" data-aktion="neu-ja">Ja, neu anfangen</button><button class="btn btn-text" type="button" data-aktion="neu-nein">Abbrechen</button>`
+              : `<button class="btn btn-text" type="button" data-aktion="neu">Stattdessen neuen Plan anfangen</button>`}
+          </div>`
+        : `<button class="btn btn-hero" type="button" data-aktion="start">Jetzt ausfüllen <span aria-hidden="true">→</span></button>`}
+      </section>
+      <div class="nebenbei">
+        <p><strong>Für einen neuen Plan brauchst du keine Datei.</strong></p>
+        <p>Nur für die Abrechnung nach dem Programm: Wenn du schon eine Harcama-Datei von der Planung hast, kannst du sie öffnen und weiter ausfüllen.</p>
+        <button class="linkbtn" type="button" data-aktion="oeffnen">Vorhandene Datei öffnen (optional)</button>
       </div>
       <p class="absender">Ortsverein Hannover Jugend | IGMG</p>`;
   },
@@ -700,10 +748,9 @@ const BILDSCHIRME = {
       </div>
       ${fehler.modus ? `<p class="errmsg">${esc(fehler.modus)}</p>` : ""}
       ${st.modus === "ist" && !hatSoll() ? `
-        <div class="card">
-          <h3>Hast du die Datei von der Planung?</h3>
-          <p class="hint">Dann siehst du bei jedem Posten, was geplant war, und die Datei enthält am Ende Plan und Abrechnung nebeneinander. Ohne Datei geht es auch.</p>
-          <div class="btnrow"><button class="btn btn-ghost" type="button" data-aktion="oeffnen">Planungs-Datei öffnen</button></div>
+        <div class="nebenbei">
+          <p><strong>Optional:</strong> Hast du die Excel-Datei von der Planung? Dann siehst du bei jedem Posten, was geplant war. Ohne Datei tippst du einfach unten auf „Weiter“.</p>
+          <button class="linkbtn" type="button" data-aktion="oeffnen">Planungs-Datei öffnen</button>
         </div>` : ""}
       ${st.modus === "ist" && hatSoll() ? `<p class="hint">Die geplanten Beträge sind geladen. Du siehst sie bei jedem Posten als Hinweis.</p>` : ""}`;
   },
@@ -977,10 +1024,7 @@ async function oeffneDatei(file) {
 /* ---------- Ereignisse ---------- */
 document.addEventListener("click", (ev) => {
   const t = ev.target.closest("button"); if (!t) return;
-  if (t.id === "weiter") {
-    if (schritt === "start" && entwurfZeit && hatInhalt() && window.__gespeicherterSchritt && schritte().includes(window.__gespeicherterSchritt) && window.__gespeicherterSchritt !== "start") return gehe(window.__gespeicherterSchritt);
-    return weiter();
-  }
+  if (t.id === "weiter") return schritt === "start" ? starte() : weiter();
   if (t.id === "zurueck") return zurueck();
   if (t.dataset.modus) { st.modus = t.dataset.modus; fehler = {}; merke(); return render(); }
   if (t.dataset.kat) {
@@ -1003,6 +1047,7 @@ document.addEventListener("click", (ev) => {
   }
   if (t.dataset.gehe) return gehe(t.dataset.gehe);
   const a = t.dataset.aktion;
+  if (a === "start") return starte();
   if (a === "oeffnen") { const i = $("#dateiInput"); i.value = ""; return i.click(); }
   if (a === "excel") return speichereExcel(t);
   if (a === "teilen") return teileExcel();
