@@ -972,9 +972,9 @@ function render() {
 /* ---------- Ablage in Teams (SharePoint) ---------- */
 /* Bleibt aus, solange clientId, tenantId und seite leer sind. Die IDs sind öffentlich und kein Geheimnis. */
 const M365 = {
-  clientId: "",                    // Anwendungs-ID (Client) aus der App-Registrierung
-  tenantId: "",                    // Verzeichnis-ID (Mandant)
-  seite: "",                       // SharePoint-Adresse des Teams, z. B. https://xyz.sharepoint.com/sites/GTHannover
+  clientId: "b7c3c3d3-7d8d-49fc-a7db-aff784de2079",   // App „Harcamaplan GT Hannover“ in Entra
+  tenantId: "3d0e3eed-8a5a-421c-8d7f-20a653e2a93d",   // Bildungs- und Interkulturelles Zentrum e.V.
+  seite: "https://bizev.sharepoint.com/sites/GTHannover2", // Team „GT Hannover“
   unterordner: "Programmformulare",
 };
 const ABLAGE_SCOPES = ["Files.ReadWrite.All", "Sites.Read.All"];
