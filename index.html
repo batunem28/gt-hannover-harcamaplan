@@ -1,0 +1,1050 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>Harcamaplan GT Hannover</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: eine ruhige Spalte wie ein Fragebogen, oben der Rote Faden als Fortschritt, unten eine feste Weiter-Leiste. */
+:root {
+  --bg: #F4EFE6;          /* Sandstein */
+  --surface: #FBF8F2;
+  --ink: #141614;         /* Asphalt */
+  --ink-soft: #545c56;
+  --line: #d8d0c1;
+  --primary: #0B3D2E;     /* Eilenriede */
+  --on-primary: #F4EFE6;
+  --accent: #009872;      /* IGMG Grün */
+  --accent-soft: rgba(0, 152, 114, .11);
+  --on-accent: #ffffff;
+  --thread: #E5402D;      /* Roter Faden: nur Linien */
+  --pos: #007a5c;
+  --neg: #b3311d;
+  --focus: rgba(0, 152, 114, .35);
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #072319; --surface: #0B3D2E; --ink: #F4EFE6; --ink-soft: #b3c6bc; --line: #24533f;
+    --primary: #8DCDBE; --on-primary: #072319; --accent: #8DCDBE; --accent-soft: rgba(141, 205, 190, .13); --on-accent: #072319;
+    --thread: #F0563F; --pos: #8DCDBE; --neg: #ff8f7a; --focus: rgba(141, 205, 190, .4);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #072319; --surface: #0B3D2E; --ink: #F4EFE6; --ink-soft: #b3c6bc; --line: #24533f;
+  --primary: #8DCDBE; --on-primary: #072319; --accent: #8DCDBE; --accent-soft: rgba(141, 205, 190, .13); --on-accent: #072319;
+  --thread: #F0563F; --pos: #8DCDBE; --neg: #ff8f7a; --focus: rgba(141, 205, 190, .4);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 10; background: var(--bg);
+}
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+.app { min-height: 100%; display: flex; flex-direction: column; }
+.wrap {
+  width: 100%; max-width: 640px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* Kopf */
+.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: var(--bg);
+}
+.top .wrap { padding-block: 14px 10px; display: grid; gap: 10px; }
+.brandline {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.brandline b { color: var(--ink); font-weight: 500; }
+.thread { position: relative; height: 2px; background: var(--line); border-radius: 2px; }
+.thread-fill {
+  position: absolute; inset: 0 auto 0 0; width: 0; background: var(--thread); border-radius: 2px;
+  transition: width .35s cubic-bezier(.2, .7, .2, 1);
+}
+.thread-fill::after {
+  content: ""; position: absolute; right: -4px; top: -3px; width: 8px; height: 8px;
+  border-radius: 50%; background: var(--thread);
+}
+.meta {
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  font-size: 13px; color: var(--ink-soft); min-height: 20px;
+}
+.meta .sums { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* Inhalt */
+main { flex: 1; }
+main .wrap { padding-block: 20px 120px; }
+.screen { display: grid; gap: 22px; animation: rein .26s cubic-bezier(.2, .7, .2, 1); }
+@keyframes rein { from { transform: translateY(10px); } to { transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .screen { animation: none; }
+  .thread-fill { transition: none; }
+}
+.eyebrow {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--accent); margin: 0;
+}
+h1, h2 {
+  font-family: var(--font-display); font-weight: 800; letter-spacing: -.02em; line-height: 1.08;
+  text-wrap: balance; margin: 0;
+}
+h1 { font-size: clamp(2.6rem, 9vw, 4rem); }
+h2 { font-size: clamp(1.7rem, 5.4vw, 2.35rem); }
+h3 { font-size: 1rem; font-weight: 600; margin: 0; }
+.lead { font-size: 1.075rem; color: var(--ink-soft); margin: 0; max-width: 34em; }
+.hint { font-size: 14px; color: var(--ink-soft); margin: 0; }
+.stack { display: grid; gap: 14px; }
+
+.facts { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0; list-style: none; }
+.facts li {
+  font-family: var(--font-mono); font-size: 12.5px; padding: 5px 10px;
+  border: 1px solid var(--line); border-radius: 999px; color: var(--ink-soft);
+}
+
+/* Felder */
+.field { display: grid; gap: 6px; }
+.field label { font-weight: 600; }
+.field .opt { font-weight: 400; color: var(--ink-soft); font-size: 14px; }
+.input {
+  width: 100%; font-size: 1.125rem; padding: 12px 14px;
+  background: var(--surface); border: 1.5px solid var(--line); border-radius: 10px;
+  transition: border-color .15s;
+}
+.input:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+.input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px var(--focus); }
+.input.err { border-color: var(--neg); }
+.errmsg { color: var(--neg); font-size: 14px; margin: 0; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  border: 1px solid var(--line); background: transparent; border-radius: 999px;
+  padding: 6px 12px; font-size: 14px;
+}
+.chip:hover { border-color: var(--accent); }
+.chip[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
+
+/* Auswahlkarten */
+.choices { display: grid; gap: 12px; }
+.choice {
+  text-align: left; display: grid; gap: 4px; padding: 18px 18px 18px 54px; position: relative;
+  background: var(--surface); border: 1.5px solid var(--line); border-radius: 14px;
+  transition: border-color .15s, background-color .15s;
+}
+.choice:hover { border-color: color-mix(in srgb, var(--accent) 50%, var(--line)); }
+.choice strong { font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; letter-spacing: -.01em; }
+.choice span { color: var(--ink-soft); font-size: 15px; }
+.choice::before {
+  content: ""; position: absolute; left: 18px; top: 21px; width: 20px; height: 20px;
+  border-radius: 50%; border: 1.5px solid var(--line); background: var(--bg);
+}
+.choice[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.choice[aria-pressed="true"]::before {
+  border-color: var(--accent); background: var(--accent);
+  box-shadow: inset 0 0 0 4px var(--bg);
+}
+
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 10px; }
+.tile {
+  text-align: left; display: grid; gap: 2px; align-content: start; padding: 14px 44px 14px 14px;
+  position: relative; background: var(--surface); border: 1.5px solid var(--line); border-radius: 12px;
+  transition: border-color .15s, background-color .15s;
+}
+.tile:hover { border-color: color-mix(in srgb, var(--accent) 50%, var(--line)); }
+.tile strong { font-weight: 600; font-size: 1.02rem; }
+.tile span { color: var(--ink-soft); font-size: 13.5px; line-height: 1.35; }
+.tile::after {
+  content: ""; position: absolute; right: 14px; top: 15px; width: 18px; height: 18px;
+  border-radius: 5px; border: 1.5px solid var(--line); background: var(--bg);
+}
+.tile[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.tile[aria-pressed="true"]::after { border-color: var(--accent); background: var(--accent); }
+.tile[aria-pressed="true"]::before {
+  content: ""; position: absolute; z-index: 1; right: 20px; top: 18px; width: 6px; height: 10px;
+  border: solid var(--on-accent); border-width: 0 2px 2px 0; transform: rotate(45deg);
+}
+
+/* Betragszeilen */
+.posten { display: grid; border-top: 1px solid var(--line); }
+.zeile { display: grid; gap: 8px; padding-block: 14px; border-bottom: 1px solid var(--line); }
+.zeile-haupt { display: flex; align-items: center; gap: 12px; }
+.zeile-text { flex: 1; min-width: 0; display: grid; gap: 1px; }
+.zeile-text label { font-weight: 600; }
+.zeile-text small { color: var(--ink-soft); font-size: 13.5px; }
+.zeile-text .plan { font-family: var(--font-mono); font-size: 12.5px; color: var(--ink-soft); }
+.betrag { position: relative; width: 9.5rem; flex: none; }
+.betrag .input {
+  text-align: right; padding-right: 32px; font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums; font-size: 1.05rem;
+}
+.eur { position: relative; display: block; }
+.eur::after {
+  content: "€"; position: absolute; right: 13px; top: 50%; transform: translateY(-50%);
+  color: var(--ink-soft); pointer-events: none; font-family: var(--font-mono);
+}
+.anzahl { width: 6.5rem; flex: none; }
+.anzahl .input { text-align: right; font-family: var(--font-mono); font-size: 1.05rem; }
+.mini-label { font-size: 13px; color: var(--ink-soft); display: block; margin-bottom: 4px; }
+.paar { display: flex; gap: 10px; align-items: end; }
+.zeile-haupt.gestapelt { flex-direction: column; align-items: stretch; gap: 10px; }
+.gestapelt .anzahl { flex: 0 0 7.5rem; width: auto; }
+.gestapelt .betrag { flex: 1; width: auto; min-width: 0; }
+.notiz-btn {
+  justify-self: start; background: none; border: 0; padding: 0;
+  color: var(--accent); font-size: 14px; font-weight: 500;
+}
+.notiz-btn:hover { text-decoration: underline; }
+.notiz .input { font-size: 15px; padding: 9px 12px; }
+.untergruppe { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); padding-top: 18px; }
+
+.summe {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+  padding: 14px 0 0; font-weight: 600;
+}
+.summe .zahl { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 1.15rem; }
+
+/* Übersicht */
+.bilanz { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.kpi { padding: 14px; border: 1px solid var(--line); border-radius: 12px; display: grid; gap: 4px; min-width: 0; }
+.kpi span { font-size: 13px; color: var(--ink-soft); }
+.kpi strong { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 1.05rem; font-weight: 500; overflow-wrap: anywhere; }
+.kpi.ergebnis { border-color: currentColor; }
+.kpi.ergebnis.pos { color: var(--pos); }
+.kpi.ergebnis.neg { color: var(--neg); }
+.kpi.ergebnis span { color: inherit; }
+@media (max-width: 460px) {
+  .bilanz { grid-template-columns: 1fr 1fr; }
+  .kpi.ergebnis { grid-column: 1 / -1; }
+}
+.tabelle-box { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 15px; }
+th, td { text-align: left; padding: 10px 6px; border-bottom: 1px solid var(--line); vertical-align: baseline; }
+th { font-size: 12px; font-weight: 500; color: var(--ink-soft); font-family: var(--font-mono); letter-spacing: .06em; text-transform: uppercase; }
+td.num, th.num { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+tr.abschnitt td { font-weight: 600; padding-top: 18px; border-bottom-color: transparent; }
+tr.gesamt td { font-weight: 600; border-bottom: 2px solid var(--ink); }
+.linkbtn { background: none; border: 0; padding: 0; color: var(--accent); font-size: 14px; font-weight: 500; }
+.linkbtn:hover { text-decoration: underline; }
+.tablink {
+  background: none; border: 0; padding: 0; text-align: left; color: var(--ink);
+  text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 4px; text-decoration-thickness: 1.5px;
+}
+.tablink:hover { text-decoration-color: var(--accent); }
+.infos { display: grid; grid-template-columns: auto 1fr auto; gap: 6px 14px; margin: 0; font-size: 15px; }
+.infos dt { color: var(--ink-soft); }
+.infos dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+
+/* Karten & Buttons */
+.card { padding: 16px; border: 1.5px solid var(--line); border-radius: 14px; background: var(--surface); display: grid; gap: 10px; }
+.card.akzent { border-color: var(--accent); }
+.btnrow { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px; padding: 0 20px; border-radius: 12px; border: 1.5px solid transparent;
+  font-weight: 600; font-size: 1rem; text-decoration: none;
+  transition: transform .12s, background-color .15s, border-color .15s;
+}
+.btn:active { transform: scale(.98); }
+.btn-primary { background: var(--primary); color: var(--on-primary); }
+.btn-primary:hover { background: color-mix(in srgb, var(--primary) 88%, var(--ink)); }
+.btn-ghost { background: transparent; border-color: var(--line); color: var(--ink); }
+.btn-ghost:hover { border-color: var(--ink-soft); }
+.btn-text { background: transparent; color: var(--ink-soft); padding: 0 8px; }
+.btn-text:hover { color: var(--ink); }
+.btn[disabled] { opacity: .5; cursor: default; }
+.datei { font-family: var(--font-mono); font-size: 13.5px; overflow-wrap: anywhere; color: var(--ink-soft); }
+.schritte { margin: 0; padding-left: 1.3em; display: grid; gap: 8px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.absender {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .04em; color: var(--ink-soft);
+  border-top: 1px solid var(--line); padding-top: 14px; margin-top: 8px;
+}
+
+/* Fußleiste */
+.nav {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 6;
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid var(--line);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.nav .wrap { display: flex; gap: 10px; padding-block: 12px; }
+.nav .btn-primary { flex: 1; }
+.nav .btn-ghost { min-width: 110px; }
+
+.toast {
+  position: fixed; left: 50%; bottom: calc(86px + env(safe-area-inset-bottom, 0px)); z-index: 20;
+  transform: translateX(-50%); max-width: min(92vw, 520px);
+  background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 10px;
+  font-size: 15px; box-shadow: 0 6px 24px rgba(0, 0, 0, .18);
+}
+</style>
+
+<div class="app">
+  <header class="top">
+    <div class="wrap">
+      <div class="brandline"><span><b>GT Hannover</b> · Harcamaplan</span><span id="modusLabel"></span></div>
+      <div class="thread" role="progressbar" aria-label="Fortschritt" aria-valuemin="0" aria-valuemax="100" id="thread"><div class="thread-fill" id="threadFill"></div></div>
+      <div class="meta"><span id="schrittInfo"></span><span class="sums" id="kopfSummen"></span></div>
+    </div>
+  </header>
+  <main>
+    <div class="wrap"><div id="screen" class="screen" aria-live="polite"></div></div>
+  </main>
+  <nav class="nav" aria-label="Schritte">
+    <div class="wrap">
+      <button class="btn btn-ghost" id="zurueck" type="button">Zurück</button>
+      <button class="btn btn-primary" id="weiter" type="button">Weiter</button>
+    </div>
+  </nav>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+<input type="file" id="dateiInput" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" class="visually-hidden" tabindex="-1">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
+
+<script id="core">
+/* Kern: Datenmodell der offiziellen Vorlage, Rechnen, Excel lesen und schreiben.
+   Zeilennummern (r) entsprechen den Zeilen in der Excel-Vorlage „Bütçe Detay Form". */
+const VORLAGE_B64 = "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";
+
+const EINNAHMEN = [
+  { r: 6, l: "Budget vom Regionalverband", h: "Zuschuss der Bölge bzw. des Regionalverbands" },
+  { r: 7, l: "Spenden" },
+];
+const TEILNEHMER = [
+  { r: 8, l: "Teilnehmer am Wettbewerb", h: "z. B. Spieler oder Teams mit Startgebühr" },
+  { r: 9, l: "Teilnehmer insgesamt", h: "alle Gäste, z. B. mit Eintritt oder Beitrag" },
+];
+const S = (r) => ({ r, l: "Sonstiges", sonst: true });
+const KATEGORIEN = [
+  { id: "preise", name: "Preise für Gewinner", bsp: "Preisgeld und Sachpreise für 1. bis 3. Platz und alle Teilnehmer", gruppen: [
+    { t: "1. Platz", items: [{ r: 10, l: "Preisgeld (bar)" }, { r: 11, l: "Sachpreis" }] },
+    { t: "2. Platz", items: [{ r: 12, l: "Preisgeld (bar)" }, { r: 13, l: "Sachpreis" }] },
+    { t: "3. Platz", items: [{ r: 14, l: "Preisgeld (bar)" }, { r: 15, l: "Sachpreis" }] },
+    { t: "Alle Teilnehmer", items: [{ r: 16, l: "Preisgeld (bar)" }, { r: 17, l: "Sachpreis" }] },
+  ] },
+  { id: "auszeichnungen", name: "Urkunden & Pokale", bsp: "Urkunden, Plaketten, Pokale", items: [
+    { r: 18, l: "Urkunden" }, { r: 19, l: "Plaketten" }, { r: 20, l: "Pokale" }, S(21) ] },
+  { id: "wuerdigungen", name: "Geschenke & Ehrungen", bsp: "Geschenke, Plaketten, Andenken für Gäste", items: [
+    { r: 22, l: "Geschenke" }, { r: 23, l: "Plaketten" }, { r: 24, l: "Andenken" }, S(25) ] },
+  { id: "bewirtung", name: "Essen & Getränke", bsp: "Restaurant, Buffet, Gebäck, Getränke", items: [
+    { r: 26, l: "Restaurant" }, { r: 27, l: "Buffet" }, { r: 28, l: "Gebäck & Teigwaren" }, { r: 29, l: "Getränke" }, S(30) ] },
+  { id: "raum", name: "Raummiete", bsp: "Halle, Saal, Sportplatz", items: [
+    { r: 31, l: "Halle" }, { r: 32, l: "Saal" }, { r: 33, l: "Kongresszentrum" }, { r: 34, l: "Sportanlage" }, S(35) ] },
+  { id: "technik", name: "Technik", bsp: "Ton, Beamer, Licht, Laptop, Software", items: [
+    { r: 36, l: "Ton & Akustik" }, { r: 37, l: "Beamer & Leinwand" }, { r: 38, l: "Licht" }, { r: 39, l: "Computer" }, S(40) ] },
+  { id: "ausstattung", name: "Möbel & Zelte mieten", bsp: "Stühle, Tische, Spielgeräte, Zelt", items: [
+    { r: 41, l: "Stühle" }, { r: 42, l: "Tische" }, { r: 43, l: "Spielgeräte" }, { r: 44, l: "Zelt" }, S(45) ] },
+  { id: "druck", name: "Druck & Porto", bsp: "Plakate, Flyer, Roll-up, Tickets, Briefe", items: [
+    { r: 46, l: "Plakate" }, { r: 47, l: "Flyer" }, { r: 48, l: "Roll-up" }, { r: 49, l: "Eintrittskarten" },
+    { r: 50, l: "Gutscheine" }, { r: 51, l: "Einladungen" }, { r: 52, l: "Briefe & Porto" },
+    { r: 53, l: "Einladungen (2. Zeile)", versteckt: true }, S(54) ] },
+  { id: "fahrt", name: "Fahrtkosten", bsp: "Kilometer, Benzin, Bahn, Mietauto, Flug", items: [
+    { r: 55, l: "Kilometerpauschale" }, { r: 56, l: "Benzin" }, { r: 57, l: "Flug" }, { r: 58, l: "Bahn" }, { r: 59, l: "Mietauto" }, S(60) ] },
+  { id: "honorare", name: "Honorare", bsp: "Moderator, Künstler, Referent", items: [
+    { r: 61, l: "Moderator" }, { r: 62, l: "Künstler" }, { r: 63, l: "Referent" }, S(64) ] },
+  { id: "uebernachtung", name: "Übernachtung", bsp: "Jugendherberge, Hotel", items: [
+    { r: 65, l: "Jugendherberge" }, { r: 66, l: "Hotel" }, S(67) ] },
+  { id: "einkauf", name: "Einkäufe & Material", bsp: "Erste Hilfe, Bühne, Protokoll, Material vor Ort", items: [
+    { r: 68, l: "Ausstattung für GOB", h: "z. B. Verbandskasten, Eisspray, Kühlkissen" },
+    { r: 69, l: "Bühnenausstattung" }, { r: 70, l: "Protokoll-Ausstattung" },
+    { r: 71, l: "Ausstattung für den Veranstaltungsort" }, S(72) ] },
+];
+for (const k of KATEGORIEN) if (!k.items) k.items = k.gruppen.flatMap((g) => g.items);
+
+const istZahl = (v) => typeof v === "number" && isFinite(v);
+const runde = (n) => Math.round(n * 100) / 100;
+
+function parseBetrag(text) {
+  if (text == null) return null;
+  let s = String(text).replace(/[€\s]/g, "").replace(/^\+/, "");
+  if (s === "" || s === "-") return null;
+  if (s.includes(",")) s = s.replace(/\./g, "").replace(",", ".");
+  else if (/^\d{1,3}(\.\d{3})+$/.test(s)) s = s.replace(/\./g, "");
+  const n = Number(s);
+  return isFinite(n) ? runde(n) : null;
+}
+const EURO = new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" });
+const ZAHL2 = new Intl.NumberFormat("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const euro = (n) => EURO.format(n || 0);
+const betragText = (n) => (istZahl(n) ? ZAHL2.format(n) : "");
+
+function datumDE(iso) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || "");
+  return m ? `${m[3]}.${m[2]}.${m[1]}` : (iso || "");
+}
+
+function neuerStand() {
+  return { v: 1, modus: null, programm: "", datum: "", abteilung: "", person: "", kat: [], werte: {} };
+}
+
+/* Alle Posten, die in die Datei gehören: Einnahmen immer, Ausgaben nur aus gewählten Kategorien. */
+function aktivePosten(st) {
+  const liste = [...EINNAHMEN, ...TEILNEHMER].map((p) => ({ ...p, art: "ein" }));
+  for (const k of KATEGORIEN) if (st.kat.includes(k.id)) for (const p of k.items) liste.push({ ...p, art: "aus", kat: k.id });
+  return liste;
+}
+
+function summe(st, posten, feld) {
+  return runde(posten.reduce((a, p) => a + (istZahl(st.werte[p.r]?.[feld]) ? st.werte[p.r][feld] : 0), 0));
+}
+function summen(st) {
+  const ps = aktivePosten(st);
+  const ein = ps.filter((p) => p.art === "ein"), aus = ps.filter((p) => p.art === "aus");
+  return {
+    sollEin: summe(st, ein, "soll"), sollAus: summe(st, aus, "soll"),
+    istEin: summe(st, ein, "ist"), istAus: summe(st, aus, "ist"),
+  };
+}
+
+function bemerkungText(p, w) {
+  const teile = [];
+  if (istZahl(w.anzahl)) teile.push(`${w.anzahl} Personen`);
+  if (w.notiz && w.notiz.trim()) teile.push(w.notiz.trim());
+  return teile.join(" – ");
+}
+
+function b64zuBytes(b64) {
+  if (typeof atob === "function") {
+    const bin = atob(b64); const u = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+    return u;
+  }
+  return Uint8Array.from(Buffer.from(b64, "base64"));
+}
+
+async function baueExcel(st) {
+  const wb = new ExcelJS.Workbook();
+  await wb.xlsx.load(b64zuBytes(VORLAGE_B64));
+  const ws = wb.worksheets[0];
+  const setze = (adr, v) => { ws.getCell(adr).value = v; };
+  setze("A2", "Verantwortlicher Abtl.: " + (st.abteilung || "").trim());
+  setze("K2", "Verantwortliche Person: " + (st.person || "").trim());
+  setze("A3", "Veranstalltungsdatum.: " + datumDE(st.datum));
+  setze("K3", "Name des Programmes.: " + (st.programm || "").trim());
+  for (const p of aktivePosten(st)) {
+    const w = st.werte[p.r]; if (!w) continue;
+    const [sollSp, istSp] = p.art === "ein" ? ["E", "H"] : ["F", "I"];
+    if (istZahl(w.soll)) setze(sollSp + p.r, w.soll);
+    if (istZahl(w.ist)) setze(istSp + p.r, w.ist);
+    const bem = bemerkungText(p, w); if (bem) setze("K" + p.r, bem);
+    if (w.status) setze("L" + p.r, w.status);
+  }
+  const s = summen(st);
+  setze("E74", { formula: "SUM(E6:E72)", result: s.sollEin });
+  setze("F74", { formula: "SUM(F6:F72)", result: s.sollAus });
+  setze("H74", { formula: "SUM(H6:H72)", result: s.istEin });
+  setze("I74", { formula: "SUM(I6:I72)", result: s.istAus });
+  setze("E75", { formula: "E74-F74", result: runde(s.sollEin - s.sollAus) });
+  setze("H75", { formula: "H74-I74", result: runde(s.istEin - s.istAus) });
+  wb.calcProperties.fullCalcOnLoad = true;
+  wb.modified = new Date();
+  return wb.xlsx.writeBuffer();
+}
+
+function zellWert(c) {
+  let v = c.value;
+  if (v && typeof v === "object" && !(v instanceof Date)) {
+    if ("result" in v) v = v.result;
+    else if (v.richText) v = v.richText.map((t) => t.text).join("");
+    else if ("text" in v) v = v.text;
+  }
+  return v;
+}
+function zellZahl(c) {
+  const v = zellWert(c);
+  if (istZahl(v)) return runde(v);
+  if (typeof v === "string") return parseBetrag(v);
+  return null;
+}
+function nachDoppelpunkt(c) {
+  const v = zellWert(c);
+  if (v instanceof Date) return v;
+  const s = v == null ? "" : String(v);
+  const i = s.indexOf(":");
+  return (i >= 0 ? s.slice(i + 1) : "").trim();
+}
+function zuIso(v) {
+  if (v instanceof Date) return v.toISOString().slice(0, 10);
+  const m = /^(\d{1,2})\.(\d{1,2})\.(\d{2,4})$/.exec(String(v || "").trim());
+  if (!m) return "";
+  const j = m[3].length === 2 ? "20" + m[3] : m[3];
+  return `${j}-${m[2].padStart(2, "0")}-${m[1].padStart(2, "0")}`;
+}
+
+/* Liest eine ausgefüllte Harcama-Datei (aus diesem Formular oder von Hand ausgefüllt) zurück in den Stand. */
+async function liesExcel(bytes) {
+  const wb = new ExcelJS.Workbook();
+  await wb.xlsx.load(bytes);
+  const ws = wb.worksheets[0];
+  const kopf = String(zellWert(ws.getCell("A1")) || "") + " " + String(zellWert(ws.getCell("B6")) || "");
+  if (!/Bilanzierung|Einnahmequellen/i.test(kopf)) throw new Error("keine-vorlage");
+  const st = neuerStand();
+  st.abteilung = String(nachDoppelpunkt(ws.getCell("A2")));
+  st.person = String(nachDoppelpunkt(ws.getCell("K2")));
+  st.datum = zuIso(nachDoppelpunkt(ws.getCell("A3")));
+  st.programm = String(nachDoppelpunkt(ws.getCell("K3")));
+  const alle = [...EINNAHMEN, ...TEILNEHMER].map((p) => ({ ...p, art: "ein" }));
+  for (const k of KATEGORIEN) for (const p of k.items) alle.push({ ...p, art: "aus", kat: k.id });
+  for (const p of alle) {
+    const [sollSp, istSp] = p.art === "ein" ? ["E", "H"] : ["F", "I"];
+    const w = {};
+    const soll = zellZahl(ws.getCell(sollSp + p.r)), ist = zellZahl(ws.getCell(istSp + p.r));
+    if (soll !== null) w.soll = soll;
+    if (ist !== null) w.ist = ist;
+    const bem = zellWert(ws.getCell("K" + p.r));
+    if (TEILNEHMER.some((t) => t.r === p.r)) {
+      if (istZahl(bem)) w.anzahl = bem;
+      else if (typeof bem === "string") {
+        const m = /^(\d+)\s*(?:Personen|Teilnehmer)?\s*(?:[–-]\s*(.*))?$/.exec(bem.trim());
+        if (m) { w.anzahl = Number(m[1]); if (m[2]) w.notiz = m[2]; } else if (bem.trim()) w.notiz = bem.trim();
+      }
+    } else if (bem != null && String(bem).trim()) w.notiz = String(bem).trim();
+    const status = zellWert(ws.getCell("L" + p.r));
+    if (status != null && String(status).trim()) w.status = String(status).trim();
+    if (Object.keys(w).length) {
+      st.werte[p.r] = w;
+      if (p.kat && !st.kat.includes(p.kat)) st.kat.push(p.kat);
+    }
+  }
+  st.kat = KATEGORIEN.map((k) => k.id).filter((id) => st.kat.includes(id));
+  return st;
+}
+</script>
+
+<script>
+/* Oberfläche: ein Schritt pro Bildschirm, alles wird sofort gerechnet und als Entwurf gemerkt. */
+const SPEICHER = "gt-harcamaplan-entwurf-v1";
+const ABTEILUNGEN = ["Teşkilatlanma", "Spor ve Gezi", "Sosyal Hizmetler", "Tanıtma", "GOB", "Eğitim", "Orta Öğretim", "Yeni Gençlik"];
+
+let st = neuerStand();
+let schritt = "start";
+let entwurfZeit = null;
+let fehler = {};
+let neuBestaetigen = false;
+
+const $ = (sel, root = document) => root.querySelector(sel);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const feld = () => (st.modus === "ist" ? "ist" : "soll");
+const wert = (r) => (st.werte[r] ||= {});
+const hatSoll = () => Object.values(st.werte).some((w) => istZahl(w.soll));
+
+/* ---------- Entwurf ---------- */
+function ladeEntwurf() {
+  try {
+    const raw = localStorage.getItem(SPEICHER);
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    if (d && d.st && d.st.v === 1) { st = Object.assign(neuerStand(), d.st); entwurfZeit = d.ts; window.__gespeicherterSchritt = d.schritt; }
+  } catch (e) { /* kein Speicher verfügbar */ }
+}
+let speicherTimer;
+function merke() {
+  clearTimeout(speicherTimer);
+  speicherTimer = setTimeout(() => {
+    try { localStorage.setItem(SPEICHER, JSON.stringify({ st, schritt, ts: Date.now() })); } catch (e) { /* egal */ }
+  }, 250);
+}
+function vergiss() {
+  try { localStorage.removeItem(SPEICHER); } catch (e) { /* egal */ }
+  entwurfZeit = null; window.__gespeicherterSchritt = null;
+}
+const hatInhalt = () => !!(st.programm || st.person || st.modus || Object.keys(st.werte).length);
+
+/* ---------- Schritte ---------- */
+function schritte() {
+  return ["start", "modus", "programm", "verantwortlich", "einnahmen", "kategorien", ...st.kat.map((k) => "kat:" + k), "uebersicht", "fertig"];
+}
+const kategorie = (id) => KATEGORIEN.find((k) => k.id === id);
+
+function gehe(ziel) {
+  schritt = ziel; fehler = {}; neuBestaetigen = false;
+  render(); merke();
+  window.scrollTo(0, 0);
+  const erstes = $("#screen [data-autofokus]");
+  if (erstes && matchMedia("(pointer: fine)").matches) erstes.focus({ preventScroll: true });
+}
+function weiter() {
+  if (!pruefe()) { render(); const f = $("#screen .input.err"); if (f) f.focus(); return; }
+  const l = schritte(); const i = l.indexOf(schritt);
+  if (i < l.length - 1) gehe(l[i + 1]);
+}
+function zurueck() {
+  const l = schritte(); const i = l.indexOf(schritt);
+  if (i > 0) gehe(l[i - 1]);
+}
+function pruefe() {
+  fehler = {};
+  if (schritt === "modus" && !st.modus) fehler.modus = "Bitte wähle Planung oder Abrechnung.";
+  if (schritt === "programm" && !st.programm.trim()) fehler.programm = "Bitte gib den Namen des Programms ein.";
+  if (schritt === "verantwortlich" && !st.person.trim()) fehler.person = "Bitte gib an, wer verantwortlich ist.";
+  return !Object.keys(fehler).length;
+}
+
+/* ---------- Bausteine ---------- */
+function betragsZeile(p, opts = {}) {
+  const w = st.werte[p.r] || {};
+  const f = feld();
+  const id = "b" + p.r;
+  const planHinweis = st.modus === "ist" && istZahl(w.soll) ? `<span class="plan">geplant: ${esc(euro(w.soll))}</span>` : "";
+  const notizOffen = p.sonst || (w.notiz && w.notiz.trim());
+  const anzahl = opts.anzahl
+    ? `<div class="anzahl"><label class="mini-label" for="a${p.r}">Anzahl</label><input class="input" id="a${p.r}" data-r="${p.r}" data-f="anzahl" inputmode="numeric" autocomplete="off" value="${istZahl(w.anzahl) ? w.anzahl : ""}" placeholder="0"></div>`
+    : "";
+  const betragLabel = opts.anzahl ? `<label class="mini-label" for="${id}">Einnahmen gesamt</label>` : "";
+  return `
+    <div class="zeile">
+      <div class="zeile-haupt${opts.anzahl ? " gestapelt" : ""}">
+        <div class="zeile-text">
+          <label for="${id}">${esc(p.l)}</label>
+          ${p.h ? `<small>${esc(p.h)}</small>` : ""}
+          ${planHinweis}
+        </div>
+        <div class="paar">
+          ${anzahl}
+          <div class="betrag">${betragLabel}<span class="eur"><input class="input" id="${id}" data-r="${p.r}" data-f="betrag" inputmode="decimal" autocomplete="off" placeholder="0,00" value="${esc(betragText(w[f]))}" ${opts.fokus ? "data-autofokus" : ""}></span></div>
+        </div>
+      </div>
+      ${notizOffen
+        ? `<div class="notiz"><label class="visually-hidden" for="n${p.r}">Notiz zu ${esc(p.l)}</label><input class="input" id="n${p.r}" data-r="${p.r}" data-f="notiz" value="${esc(w.notiz || "")}" placeholder="${p.sonst ? "Was genau?" : "Notiz"}"></div>`
+        : `<button type="button" class="notiz-btn" data-notiz="${p.r}">+ Notiz hinzufügen</button>`}
+    </div>`;
+}
+
+function kopfInfo() {
+  const l = schritte(); const i = l.indexOf(schritt);
+  const p = i <= 0 ? 0 : Math.round((i / (l.length - 1)) * 100);
+  $("#threadFill").style.width = p + "%";
+  $("#thread").setAttribute("aria-valuenow", p);
+  const innen = i > 0 && i < l.length - 1;
+  $("#schrittInfo").textContent = innen ? `Schritt ${i} von ${l.length - 2}` : (i === 0 ? "" : "Fertig");
+  $("#modusLabel").textContent = st.modus === "ist" ? "Abrechnung" : st.modus === "plan" ? "Planung" : "";
+  aktualisiereSummen();
+  const nav = $(".nav");
+  $("#zurueck").hidden = i === 0;
+  const wbtn = $("#weiter");
+  wbtn.hidden = schritt === "fertig";
+  wbtn.textContent = schritt === "start" ? (entwurfZeit && hatInhalt() ? "Weitermachen" : "Los geht’s")
+    : schritt === "kategorien" && !st.kat.length ? "Ohne Ausgaben weiter"
+    : schritt === "uebersicht" ? "Datei erstellen" : "Weiter";
+  nav.hidden = false;
+}
+
+function aktualisiereSummen() {
+  const s = summen(st);
+  const ein = st.modus === "ist" ? s.istEin : s.sollEin, aus = st.modus === "ist" ? s.istAus : s.sollAus;
+  const zeigen = ["einnahmen", "kategorien", "uebersicht"].includes(schritt) || schritt.startsWith("kat:");
+  $("#kopfSummen").textContent = zeigen ? `Ein ${euro(ein)} · Aus ${euro(aus)}` : "";
+  document.querySelectorAll("[data-summe]").forEach((el) => {
+    const k = kategorie(el.dataset.summe);
+    if (k) el.textContent = euro(summe(st, k.items, feld()));
+  });
+  const eSum = $("[data-summe-ein]");
+  if (eSum) eSum.textContent = euro(ein);
+}
+
+/* ---------- Bildschirme ---------- */
+const BILDSCHIRME = {
+  start() {
+    const entwurf = entwurfZeit && hatInhalt();
+    const wann = entwurf ? new Date(entwurfZeit).toLocaleString("de-DE", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }) : "";
+    return `
+      <p class="eyebrow">Bilanzierung und Checkliste zur Budget-Freigabe</p>
+      <h1>Harcamaplan</h1>
+      <p class="lead">Plane das Budget für euer Programm oder rechne es danach ab. Du beantwortest ein paar einfache Fragen, die Summen rechnen sich von selbst. Am Ende bekommst du die fertige Excel-Datei im offiziellen Format.</p>
+      <ul class="facts"><li>ca. 5 Minuten</li><li>Entwurf wird automatisch gemerkt</li><li>Offizielle Excel-Vorlage</li></ul>
+      ${entwurf ? `
+        <div class="card akzent">
+          <h3>Du hast einen angefangenen Plan</h3>
+          <p class="hint">${esc(st.programm || "Ohne Namen")}${st.modus ? " · " + (st.modus === "ist" ? "Abrechnung" : "Planung") : ""} · zuletzt bearbeitet ${esc(wann)}</p>
+          <div class="btnrow">
+            ${neuBestaetigen
+              ? `<span class="hint">Der angefangene Plan wird gelöscht.</span><button class="btn btn-ghost" type="button" data-aktion="neu-ja">Ja, neu anfangen</button><button class="btn btn-text" type="button" data-aktion="neu-nein">Abbrechen</button>`
+              : `<button class="btn btn-text" type="button" data-aktion="neu">Stattdessen neu anfangen</button>`}
+          </div>
+        </div>` : ""}
+      <div class="card">
+        <h3>Du hast schon eine Harcama-Datei?</h3>
+        <p class="hint">Zum Beispiel deine Planung von vor dem Programm. Öffne sie hier, um sie zu ändern oder die Abrechnung zu ergänzen.</p>
+        <div class="btnrow"><button class="btn btn-ghost" type="button" data-aktion="oeffnen">Excel-Datei öffnen</button></div>
+      </div>
+      <p class="absender">Ortsverein Hannover Jugend | IGMG</p>`;
+  },
+
+  modus() {
+    const k = (id, titel, text) => `<button type="button" class="choice" data-modus="${id}" aria-pressed="${st.modus === id}"><strong>${titel}</strong><span>${text}</span></button>`;
+    return `
+      <p class="eyebrow">Worum geht es?</p>
+      <h2>Was möchtest du machen?</h2>
+      <div class="choices" role="group" aria-label="Art des Plans">
+        ${k("plan", "Planung", "Vor dem Programm. Du schätzt, was ihr einnehmt und ausgebt, damit das Budget freigegeben werden kann.")}
+        ${k("ist", "Abrechnung", "Nach dem Programm. Du trägst ein, was wirklich eingenommen und ausgegeben wurde.")}
+      </div>
+      ${fehler.modus ? `<p class="errmsg">${esc(fehler.modus)}</p>` : ""}
+      ${st.modus === "ist" && !hatSoll() ? `
+        <div class="card">
+          <h3>Hast du die Datei von der Planung?</h3>
+          <p class="hint">Dann siehst du bei jedem Posten, was geplant war, und die Datei enthält am Ende Plan und Abrechnung nebeneinander. Ohne Datei geht es auch.</p>
+          <div class="btnrow"><button class="btn btn-ghost" type="button" data-aktion="oeffnen">Planungs-Datei öffnen</button></div>
+        </div>` : ""}
+      ${st.modus === "ist" && hatSoll() ? `<p class="hint">Die geplanten Beträge sind geladen. Du siehst sie bei jedem Posten als Hinweis.</p>` : ""}`;
+  },
+
+  programm() {
+    return `
+      <p class="eyebrow">Das Programm</p>
+      <h2>Um welches Programm geht es?</h2>
+      <div class="stack">
+        <div class="field">
+          <label for="programm">Name des Programms</label>
+          <input class="input ${fehler.programm ? "err" : ""}" id="programm" data-k="programm" value="${esc(st.programm)}" placeholder="z. B. BGT Cup Fußballturnier" autocomplete="off" data-autofokus>
+          ${fehler.programm ? `<p class="errmsg">${esc(fehler.programm)}</p>` : ""}
+        </div>
+        <div class="field">
+          <label for="datum">Datum der Veranstaltung <span class="opt">(falls schon bekannt)</span></label>
+          <input class="input" id="datum" type="date" data-k="datum" value="${esc(st.datum)}">
+        </div>
+      </div>`;
+  },
+
+  verantwortlich() {
+    return `
+      <p class="eyebrow">Zuständigkeit</p>
+      <h2>Wer ist verantwortlich?</h2>
+      <div class="stack">
+        <div class="field">
+          <label for="abteilung">Abteilung (Birim)</label>
+          <input class="input" id="abteilung" data-k="abteilung" value="${esc(st.abteilung)}" placeholder="z. B. Spor ve Gezi" autocomplete="off" data-autofokus>
+          <div class="chips" role="group" aria-label="Vorschläge">
+            ${ABTEILUNGEN.map((a) => `<button type="button" class="chip" data-abteilung="${esc(a)}" aria-pressed="${st.abteilung === a}">${esc(a)}</button>`).join("")}
+          </div>
+        </div>
+        <div class="field">
+          <label for="person">Verantwortliche Person</label>
+          <input class="input ${fehler.person ? "err" : ""}" id="person" data-k="person" value="${esc(st.person)}" placeholder="Vor- und Nachname" autocomplete="name">
+          ${fehler.person ? `<p class="errmsg">${esc(fehler.person)}</p>` : ""}
+        </div>
+      </div>`;
+  },
+
+  einnahmen() {
+    const plan = st.modus !== "ist";
+    return `
+      <p class="eyebrow">Einnahmen</p>
+      <h2>${plan ? "Mit welchen Einnahmen rechnet ihr?" : "Was ist tatsächlich reingekommen?"}</h2>
+      <p class="hint">Trag nur ein, was passt. Leere Felder zählen als 0.</p>
+      <div class="posten">
+        ${EINNAHMEN.map((p, i) => betragsZeile(p, { fokus: i === 0 })).join("")}
+        <div class="untergruppe">Teilnehmer</div>
+        ${TEILNEHMER.map((p) => betragsZeile(p, { anzahl: true })).join("")}
+      </div>
+      <div class="summe"><span>Einnahmen gesamt</span><span class="zahl" data-summe-ein></span></div>`;
+  },
+
+  kategorien() {
+    return `
+      <p class="eyebrow">Ausgaben</p>
+      <h2>Wofür gebt ihr Geld aus?</h2>
+      <p class="hint">Tippe alles an, was bei eurem Programm anfällt. Danach fragen wir die Beträge Schritt für Schritt ab.</p>
+      <div class="tiles" role="group" aria-label="Kostenarten">
+        ${KATEGORIEN.map((k) => `<button type="button" class="tile" data-kat="${k.id}" aria-pressed="${st.kat.includes(k.id)}"><strong>${esc(k.name)}</strong><span>${esc(k.bsp)}</span></button>`).join("")}
+      </div>
+      <p class="hint" id="katZahl">${st.kat.length ? `${st.kat.length} ausgewählt` : "Noch nichts ausgewählt"}</p>`;
+  },
+
+  kat(id) {
+    const k = kategorie(id);
+    const nr = st.kat.indexOf(id) + 1;
+    const plan = st.modus !== "ist";
+    const sichtbar = (p) => !p.versteckt || istZahl(st.werte[p.r]?.soll) || istZahl(st.werte[p.r]?.ist);
+    let erst = true;
+    const zeile = (p) => { const z = betragsZeile(p, { fokus: erst }); erst = false; return z; };
+    const inhalt = k.gruppen
+      ? k.gruppen.map((g) => `<div class="untergruppe">${esc(g.t)}</div>${g.items.filter(sichtbar).map(zeile).join("")}`).join("")
+      : k.items.filter(sichtbar).map(zeile).join("");
+    return `
+      <p class="eyebrow">Ausgaben · ${nr} von ${st.kat.length}</p>
+      <h2>${esc(k.name)}</h2>
+      <p class="hint">${plan ? "Wie viel plant ihr dafür ein?" : "Wie viel wurde wirklich ausgegeben?"} Leere Felder zählen als 0.</p>
+      <div class="posten">${inhalt}</div>
+      <div class="summe"><span>Summe ${esc(k.name)}</span><span class="zahl" data-summe="${k.id}"></span></div>`;
+  },
+
+  uebersicht() {
+    const s = summen(st);
+    const ist = st.modus === "ist";
+    const vergleich = ist && hatSoll();
+    const ein = ist ? s.istEin : s.sollEin, aus = ist ? s.istAus : s.sollAus;
+    const erg = runde(ein - aus);
+    const zelle = (n) => `<td class="num">${euro(n)}</td>`;
+    const zeilen = (titel, posten, ziel) => {
+      const so = summe(st, posten, "soll"), is = summe(st, posten, "ist");
+      return `<tr><td><button type="button" class="tablink" data-gehe="${ziel}" title="Ändern">${esc(titel)}</button></td>${vergleich ? zelle(so) + zelle(is) : zelle(ist ? is : so)}</tr>`;
+    };
+    const ausgaben = st.kat.map((id) => { const k = kategorie(id); return zeilen(k.name, k.items, "kat:" + id); }).join("");
+    const kopfzeile = vergleich ? `<th class="num">Geplant</th><th class="num">Tatsächlich</th>` : `<th class="num">${ist ? "Tatsächlich" : "Geplant"}</th>`;
+    const gesamt = (titel, so, is) => `<tr class="gesamt"><td>${titel}</td>${vergleich ? zelle(so) + zelle(is) : zelle(ist ? is : so)}</tr>`;
+    const spalten = vergleich ? 3 : 2;
+    return `
+      <p class="eyebrow">Übersicht</p>
+      <h2>Passt alles?</h2>
+      <div class="bilanz">
+        <div class="kpi"><span>Einnahmen</span><strong>${euro(ein)}</strong></div>
+        <div class="kpi"><span>Ausgaben</span><strong>${euro(aus)}</strong></div>
+        <div class="kpi ergebnis ${erg >= 0 ? "pos" : "neg"}"><span>${erg >= 0 ? "Überschuss" : "Fehlbetrag"}</span><strong>${euro(Math.abs(erg))}</strong></div>
+      </div>
+      ${erg < 0 ? `<p class="hint">Die Ausgaben sind höher als die Einnahmen. Klärt vorher, wie der Fehlbetrag gedeckt wird.</p>` : ""}
+      <dl class="infos">
+        <dt>Programm</dt><dd>${esc(st.programm)}${st.datum ? " · " + esc(datumDE(st.datum)) : ""}</dd><dd><button type="button" class="linkbtn" data-gehe="programm">Ändern</button></dd>
+        <dt>Verantwortlich</dt><dd>${esc(st.person)}${st.abteilung ? " · " + esc(st.abteilung) : ""}</dd><dd><button type="button" class="linkbtn" data-gehe="verantwortlich">Ändern</button></dd>
+      </dl>
+      <p class="hint">Tippe auf einen Posten, um ihn zu ändern.</p>
+      <div class="tabelle-box">
+        <table>
+          <thead><tr><th>Posten</th>${kopfzeile}</tr></thead>
+          <tbody>
+            <tr class="abschnitt"><td colspan="${spalten}">Einnahmen</td></tr>
+            ${zeilen("Budget & Spenden", EINNAHMEN, "einnahmen")}
+            ${zeilen("Teilnehmer", TEILNEHMER, "einnahmen")}
+            ${gesamt("Einnahmen gesamt", s.sollEin, s.istEin)}
+            <tr class="abschnitt"><td colspan="${spalten}">Ausgaben</td></tr>
+            ${ausgaben || `<tr><td colspan="${spalten}" class="hint">Keine Ausgaben ausgewählt. <button type="button" class="linkbtn" data-gehe="kategorien">Ausgaben auswählen</button></td></tr>`}
+            ${gesamt("Ausgaben gesamt", s.sollAus, s.istAus)}
+          </tbody>
+        </table>
+      </div>`;
+  },
+
+  fertig() {
+    return `
+      <p class="eyebrow">Geschafft</p>
+      <h2>Dein Harcamaplan ist fertig.</h2>
+      <div class="card akzent">
+        <h3>Excel-Datei im offiziellen Format</h3>
+        <p class="datei" id="dateiname">${esc(dateiname())}</p>
+        <div class="btnrow">
+          <button class="btn btn-primary" type="button" data-aktion="excel">Excel-Datei speichern</button>
+          ${kannTeilen() ? `<button class="btn btn-ghost" type="button" data-aktion="teilen">Datei teilen</button>` : ""}
+        </div>
+        <p class="errmsg" id="dlFehler" hidden></p>
+      </div>
+      <div class="stack">
+        <h3>So geht es weiter</h3>
+        <ol class="schritte">
+          <li>Schick die Excel-Datei an den Kassenwart (Muhasebe) oder den Vorstand zur Budget-Freigabe.</li>
+          <li>Nach dem Programm öffnest du die Datei hier wieder, wählst „Abrechnung“ und trägst die tatsächlichen Beträge ein.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3>Kurz per WhatsApp schicken?</h3>
+        <p class="hint">Kopiert eine kurze Zusammenfassung mit allen Summen, die du in jeden Chat einfügen kannst.</p>
+        <div class="btnrow"><button class="btn btn-ghost" type="button" data-aktion="kopieren">Zusammenfassung kopieren</button></div>
+        <textarea id="kopierFeld" class="input" rows="6" readonly hidden></textarea>
+      </div>
+      <div class="btnrow">
+        ${neuBestaetigen
+          ? `<span class="hint">Dein Plan wird von diesem Gerät gelöscht. Hast du die Datei gespeichert?</span><button class="btn btn-ghost" type="button" data-aktion="neu-ja">Ja, neuen Plan anfangen</button><button class="btn btn-text" type="button" data-aktion="neu-nein">Abbrechen</button>`
+          : `<button class="btn btn-text" type="button" data-aktion="neu">Neuen Plan anfangen</button>`}
+      </div>`;
+  },
+};
+
+function render() {
+  const [name, arg] = schritt.split(":");
+  $("#screen").innerHTML = BILDSCHIRME[name](arg);
+  const scr = $("#screen"); scr.style.animation = "none"; void scr.offsetWidth; scr.style.animation = "";
+  kopfInfo();
+}
+
+/* ---------- Ausgabe ---------- */
+function dateiname() {
+  const sauber = (s) => String(s || "").replace(/[\\/:*?"<>|]+/g, " ").replace(/\s+/g, " ").trim();
+  const teile = ["Harcama", sauber(st.programm) || "Programm", st.datum || "", st.modus === "ist" ? "Abrechnung" : "Planung"].filter(Boolean);
+  return teile.join(" ") + ".xlsx";
+}
+const imArtifact = () => !!(window.claude && typeof window.claude.use === "function");
+function kannTeilen() {
+  if (imArtifact() || !navigator.canShare || !window.File) return false;
+  try { return navigator.canShare({ files: [new File([""], "t.xlsx", { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" })] }); } catch (e) { return false; }
+}
+function zeigeDlFehler(text) { const el = $("#dlFehler"); if (el) { el.textContent = text; el.hidden = !text; } }
+
+async function excelBlob() {
+  if (typeof ExcelJS === "undefined") throw new Error("lib");
+  const buf = await baueExcel(st);
+  return new Blob([buf], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+}
+async function speichereExcel(knopf) {
+  zeigeDlFehler("");
+  knopf.disabled = true; const alt = knopf.textContent; knopf.textContent = "Wird erstellt …";
+  try {
+    const blob = await excelBlob();
+    const name = dateiname();
+    if (imArtifact()) {
+      const dl = await window.claude.use("downloads");
+      if (!dl) { zeigeDlFehler("In dieser Ansicht kann keine Datei gespeichert werden. Kopiere stattdessen die Zusammenfassung unten."); return; }
+      try { await dl.save({ filename: name, data: blob }); zeigeToast("Datei gespeichert"); }
+      catch (e) {
+        if (e && e.code === "declined") return;
+        if (e && e.code === "rate_limited") { zeigeDlFehler("Es ist schon ein Speichern-Fenster offen. Bitte schließe es und versuch es noch einmal."); return; }
+        zeigeDlFehler("Die Datei konnte hier nicht gespeichert werden. Kopiere stattdessen die Zusammenfassung unten.");
+      }
+    } else {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 4000);
+      zeigeToast("Datei gespeichert");
+    }
+  } catch (e) {
+    zeigeDlFehler(e && e.message === "lib" ? "Die Excel-Funktion konnte nicht geladen werden. Prüfe deine Internetverbindung und lade die Seite neu." : "Beim Erstellen der Datei ist etwas schiefgelaufen. Bitte versuch es noch einmal.");
+  } finally { knopf.disabled = false; knopf.textContent = alt; }
+}
+async function teileExcel() {
+  try {
+    const blob = await excelBlob();
+    const file = new File([blob], dateiname(), { type: blob.type });
+    await navigator.share({ files: [file], title: dateiname() });
+  } catch (e) { if (e && e.name !== "AbortError") zeigeDlFehler("Teilen hat nicht geklappt. Speichere die Datei und schick sie dann."); }
+}
+function zusammenfassung() {
+  const s = summen(st); const ist = st.modus === "ist";
+  const ein = ist ? s.istEin : s.sollEin, aus = ist ? s.istAus : s.sollAus, erg = runde(ein - aus);
+  const z = [
+    `Harcamaplan: ${st.programm}${st.datum ? " (" + datumDE(st.datum) + ")" : ""}`,
+    `${ist ? "Abrechnung" : "Planung"} · ${[st.abteilung, st.person].filter(Boolean).join(" · ")}`,
+    "",
+    `Einnahmen: ${euro(ein)}`,
+    `Ausgaben: ${euro(aus)}`,
+    `${erg >= 0 ? "Überschuss" : "Fehlbetrag"}: ${euro(Math.abs(erg))}`,
+  ];
+  if (st.kat.length) {
+    z.push("", "Ausgaben im Einzelnen:");
+    for (const id of st.kat) { const k = kategorie(id); z.push(`• ${k.name}: ${euro(summe(st, k.items, feld()))}`); }
+  }
+  return z.join("\n");
+}
+async function kopiere() {
+  const text = zusammenfassung();
+  try { await navigator.clipboard.writeText(text); zeigeToast("Zusammenfassung kopiert"); }
+  catch (e) {
+    const ta = $("#kopierFeld"); ta.hidden = false; ta.value = text; ta.focus(); ta.select();
+    zeigeToast("Text markiert. Jetzt kopieren und einfügen.");
+  }
+}
+
+let toastTimer;
+function zeigeToast(text) {
+  const t = $("#toast"); t.textContent = text; t.hidden = false;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.hidden = true; }, 3200);
+}
+
+async function oeffneDatei(file) {
+  if (!file) return;
+  if (typeof ExcelJS === "undefined") { zeigeToast("Excel-Funktion nicht geladen. Prüfe die Internetverbindung."); return; }
+  try {
+    const neu = await liesExcel(new Uint8Array(await file.arrayBuffer()));
+    const modus = st.modus;
+    st = neu;
+    const anzahl = Object.keys(neu.werte).length;
+    const hatIst = Object.values(neu.werte).some((w) => istZahl(w.ist));
+    st.modus = schritt === "modus" && modus ? modus : (hatIst ? "ist" : null);
+    entwurfZeit = Date.now();
+    gehe("modus");
+    zeigeToast(`„${neu.programm || file.name}“ geladen · ${anzahl} Posten übernommen`);
+  } catch (e) {
+    zeigeToast(e && e.message === "keine-vorlage" ? "Diese Datei sieht nicht wie ein Harcamaplan aus." : "Die Datei konnte nicht gelesen werden.");
+  }
+}
+
+/* ---------- Ereignisse ---------- */
+document.addEventListener("click", (ev) => {
+  const t = ev.target.closest("button"); if (!t) return;
+  if (t.id === "weiter") {
+    if (schritt === "start" && entwurfZeit && hatInhalt() && window.__gespeicherterSchritt && schritte().includes(window.__gespeicherterSchritt) && window.__gespeicherterSchritt !== "start") return gehe(window.__gespeicherterSchritt);
+    return weiter();
+  }
+  if (t.id === "zurueck") return zurueck();
+  if (t.dataset.modus) { st.modus = t.dataset.modus; fehler = {}; merke(); return render(); }
+  if (t.dataset.kat) {
+    const id = t.dataset.kat;
+    st.kat = st.kat.includes(id) ? st.kat.filter((x) => x !== id) : KATEGORIEN.map((k) => k.id).filter((k) => k === id || st.kat.includes(k));
+    t.setAttribute("aria-pressed", st.kat.includes(id));
+    $("#katZahl").textContent = st.kat.length ? `${st.kat.length} ausgewählt` : "Noch nichts ausgewählt";
+    merke(); return kopfInfo();
+  }
+  if (t.dataset.abteilung) {
+    st.abteilung = t.dataset.abteilung; $("#abteilung").value = st.abteilung;
+    document.querySelectorAll("[data-abteilung]").forEach((c) => c.setAttribute("aria-pressed", c.dataset.abteilung === st.abteilung));
+    return merke();
+  }
+  if (t.dataset.notiz) {
+    const r = t.dataset.notiz;
+    const box = document.createElement("div"); box.className = "notiz";
+    box.innerHTML = `<label class="visually-hidden" for="n${r}">Notiz</label><input class="input" id="n${r}" data-r="${r}" data-f="notiz" placeholder="Notiz, z. B. wofür genau">`;
+    t.replaceWith(box); box.querySelector("input").focus(); return;
+  }
+  if (t.dataset.gehe) return gehe(t.dataset.gehe);
+  const a = t.dataset.aktion;
+  if (a === "oeffnen") { const i = $("#dateiInput"); i.value = ""; return i.click(); }
+  if (a === "excel") return speichereExcel(t);
+  if (a === "teilen") return teileExcel();
+  if (a === "kopieren") return kopiere();
+  if (a === "neu") { neuBestaetigen = true; return render(); }
+  if (a === "neu-nein") { neuBestaetigen = false; return render(); }
+  if (a === "neu-ja") { vergiss(); st = neuerStand(); return gehe(schritt === "fertig" ? "modus" : "start"); }
+});
+
+document.addEventListener("input", (ev) => {
+  const el = ev.target;
+  if (el.dataset.k) {
+    st[el.dataset.k] = el.value;
+    if (el.dataset.k === "abteilung") document.querySelectorAll("[data-abteilung]").forEach((c) => c.setAttribute("aria-pressed", c.dataset.abteilung === el.value));
+    if (fehler[el.dataset.k] && el.value.trim()) { el.classList.remove("err"); }
+    return merke();
+  }
+  if (el.dataset.r) {
+    const w = wert(el.dataset.r);
+    if (el.dataset.f === "betrag") { const n = parseBetrag(el.value); if (n === null) delete w[feld()]; else w[feld()] = n; }
+    if (el.dataset.f === "anzahl") { const n = parseInt(el.value.replace(/\D/g, ""), 10); if (isFinite(n)) w.anzahl = n; else delete w.anzahl; }
+    if (el.dataset.f === "notiz") { if (el.value.trim()) w.notiz = el.value; else delete w.notiz; }
+    if (!Object.keys(w).length) delete st.werte[el.dataset.r];
+    aktualisiereSummen(); merke();
+  }
+});
+document.addEventListener("focusout", (ev) => {
+  const el = ev.target;
+  if (el.dataset && el.dataset.f === "betrag") el.value = betragText(st.werte[el.dataset.r]?.[feld()]);
+});
+document.addEventListener("keydown", (ev) => {
+  if (ev.key !== "Enter" || ev.isComposing) return;
+  const el = ev.target;
+  if (el.tagName !== "INPUT" || el.type === "file") return;
+  ev.preventDefault();
+  const felder = [...document.querySelectorAll("#screen input.input:not([readonly])")];
+  const i = felder.indexOf(el);
+  if (i >= 0 && i < felder.length - 1) felder[i + 1].focus(); else weiter();
+});
+$("#dateiInput").addEventListener("change", (ev) => oeffneDatei(ev.target.files[0]));
+
+ladeEntwurf();
+render();
+</script>
+</body></html>
