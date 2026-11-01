@@ -286,6 +286,17 @@ tbody tr:last-child td { border-bottom: 0; }
   border: solid var(--on-accent); border-width: 0 3.5px 3.5px 0; transform: rotate(45deg);
 }
 .datei { font-family: var(--font-mono); font-size: 14px; overflow-wrap: anywhere; color: var(--ink-soft); margin: 0; }
+.ablage-ziel {
+  margin: 0; padding: 10px 12px; border-radius: 10px; background: var(--bg); border: 1.5px dashed var(--card-border);
+  font-family: var(--font-mono); font-size: 14px; font-weight: 500; overflow-wrap: anywhere;
+}
+.ablage-ziel span { color: var(--ink-soft); }
+.ablage-status { display: grid; gap: 4px; padding: 12px 14px; border-radius: 12px; font-size: 15px; }
+.ablage-status.laeuft { background: var(--bg); color: var(--ink-soft); }
+.ablage-status.ok { background: var(--accent-soft); border: 2px solid var(--accent); }
+.ablage-status.ok span { font-family: var(--font-mono); font-size: 14px; overflow-wrap: anywhere; }
+.ablage-status.ok a { color: var(--link); font-weight: 600; }
+.ablage-status.fehler { background: var(--neg-soft); color: var(--neg); font-weight: 600; }
 textarea.input { min-height: 140px; font-size: 15px; }
 
 /* Knöpfe */
@@ -595,11 +606,13 @@ function ladeEntwurf() {
   } catch (e) { /* kein Speicher verfügbar */ }
 }
 let speicherTimer;
+function speichereSofort() {
+  clearTimeout(speicherTimer);
+  try { localStorage.setItem(SPEICHER, JSON.stringify({ st, schritt, ts: Date.now() })); } catch (e) { /* egal */ }
+}
 function merke() {
   clearTimeout(speicherTimer);
-  speicherTimer = setTimeout(() => {
-    try { localStorage.setItem(SPEICHER, JSON.stringify({ st, schritt, ts: Date.now() })); } catch (e) { /* egal */ }
-  }, 250);
+  speicherTimer = setTimeout(speichereSofort, 250);
 }
 function vergiss() {
   try { localStorage.removeItem(SPEICHER); } catch (e) { /* egal */ }
@@ -619,6 +632,7 @@ function eyebrow(text) {
 
 function gehe(ziel) {
   schritt = ziel; fehler = {}; neuBestaetigen = false;
+  if (ziel !== "fertig") ablageStatus = null;
   render(); merke();
   window.scrollTo(0, 0);
   const erstes = $("#screen [data-autofokus]");
@@ -888,6 +902,32 @@ const BILDSCHIRME = {
   },
 
   fertig() {
+    const empfaenger = istBaskan() ? "AT" : "Başkan und Muhasip";
+    if (ablageAktiv()) return `
+      <div class="erfolg"><span class="erfolg-icon" aria-hidden="true"></span><h2>Dein Harcamaplan ist fertig.</h2></div>
+      <div class="card akzent">
+        <h3>In Teams ablegen</h3>
+        <p class="hint">Der Plan landet automatisch in diesem Ordner:</p>
+        <p class="ablage-ziel">${ablageZiel().map(esc).join(' <span aria-hidden="true">›</span> ')}</p>
+        <button class="btn btn-primary" type="button" data-aktion="teams">Mit GT-Konto in Teams ablegen</button>
+        <div id="ablageStatus" class="ablage-status" role="status" hidden></div>
+        <p class="hint">${empfaenger} sehen ihn dann direkt in Teams. Beim ersten Mal meldest du dich mit deinem Microsoft-Konto von GT Hannover an.</p>
+      </div>
+      <div class="card">
+        <h3>Oder: Excel-Datei aufs Gerät speichern</h3>
+        <p class="datei" id="dateiname">${esc(dateiname())}</p>
+        <div class="btnrow">
+          <button class="btn btn-ghost" type="button" data-aktion="excel">Excel-Datei speichern</button>
+          ${kannTeilen() ? `<button class="btn btn-ghost" type="button" data-aktion="teilen">Per WhatsApp & Co. teilen</button>` : ""}
+        </div>
+        <p class="errmsg" id="dlFehler" hidden></p>
+        <p class="hint">Nach dem Programm öffnest du die Datei hier wieder, wählst „Abrechnung“ und trägst die tatsächlichen Beträge ein.</p>
+      </div>
+      <div class="btnrow">
+        ${neuBestaetigen
+          ? `<span class="hint">Dein Plan wird von diesem Gerät gelöscht. Hast du ihn abgelegt oder gespeichert?</span><button class="btn btn-ghost" type="button" data-aktion="neu-ja">Ja, neuen Plan anfangen</button><button class="btn btn-text" type="button" data-aktion="neu-nein">Abbrechen</button>`
+          : `<button class="btn btn-text" type="button" data-aktion="neu">Neuen Plan anfangen</button>`}
+      </div>`;
     return `
       <div class="erfolg"><span class="erfolg-icon" aria-hidden="true"></span><h2>Dein Harcamaplan ist fertig.</h2></div>
       <div class="card akzent">
@@ -926,6 +966,140 @@ function render() {
   $("#screen").innerHTML = BILDSCHIRME[name](arg);
   const scr = $("#screen"); scr.style.animation = "none"; void scr.offsetWidth; scr.style.animation = "";
   kopfInfo();
+  if (name === "fertig") zeigeAblage();
+}
+
+/* ---------- Ablage in Teams (SharePoint) ---------- */
+/* Bleibt aus, solange clientId, tenantId und seite leer sind. Die IDs sind öffentlich und kein Geheimnis. */
+const M365 = {
+  clientId: "",                    // Anwendungs-ID (Client) aus der App-Registrierung
+  tenantId: "",                    // Verzeichnis-ID (Mandant)
+  seite: "",                       // SharePoint-Adresse des Teams, z. B. https://xyz.sharepoint.com/sites/GTHannover
+  unterordner: "Programmformulare",
+};
+const ABLAGE_SCOPES = ["Files.ReadWrite.All", "Sites.Read.All"];
+const MSAL_URL = "https://cdn.jsdelivr.net/npm/@azure/msal-browser@3.30.0/lib/msal-browser.min.js";
+const ABLAGE_MERKER = "gt-harcamaplan-ablage";
+let ablageStatus = null;
+let msalApp = null;
+
+const ablageAktiv = () => !!(M365.clientId && M365.tenantId && M365.seite) && !imArtifact();
+const ordnerName = (s) => String(s || "").replace(/["*:<>?\/\\|#%]+/g, " ").replace(/\s+/g, " ").trim().replace(/^\.+|\.+$/g, "");
+const normal = (s) => String(s || "").toLocaleLowerCase("tr").normalize("NFD").replace(/[̀-ͯ]/g, "")
+  .replace(/ı/g, "i").replace(/\bve\b/g, "").replace(/[^a-z0-9]/g, "");
+function programmOrdner() {
+  const name = ordnerName(st.programm) || "Programm";
+  const jahr = (st.datum || "").slice(2, 4) || String(new Date().getFullYear()).slice(2);
+  return /\b(20)?\d{2}$/.test(name) ? name : `${name} ${jahr}`;
+}
+const ablageZiel = () => [ordnerName(st.abteilung) || "Ohne Birim", M365.unterordner, programmOrdner()];
+
+function ladeSkript(src) {
+  return new Promise((ok, nein) => {
+    const s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = () => nein(new Error("lib"));
+    document.head.appendChild(s);
+  });
+}
+async function msalHolen() {
+  if (msalApp) return msalApp;
+  if (!window.msal) await ladeSkript(MSAL_URL);
+  msalApp = new window.msal.PublicClientApplication({
+    auth: { clientId: M365.clientId, authority: "https://login.microsoftonline.com/" + M365.tenantId, redirectUri: location.origin + location.pathname },
+    cache: { cacheLocation: "localStorage" },
+  });
+  await msalApp.initialize();
+  return msalApp;
+}
+async function tokenHolen(app) {
+  const konto = app.getActiveAccount() || app.getAllAccounts()[0];
+  if (!konto) return null;
+  try { return (await app.acquireTokenSilent({ scopes: ABLAGE_SCOPES, account: konto })).accessToken; } catch (e) { return null; }
+}
+async function graph(token, pfad, opts = {}) {
+  const r = await fetch("https://graph.microsoft.com/v1.0" + pfad, { ...opts, headers: { Authorization: "Bearer " + token, ...(opts.headers || {}) } });
+  if (!r.ok) { const e = new Error("graph"); e.status = r.status; throw e; }
+  return r.json();
+}
+async function hochladen(token) {
+  const u = new URL(M365.seite);
+  const site = await graph(token, `/sites/${u.hostname}:${u.pathname.replace(/\/$/, "")}`);
+  const drive = await graph(token, `/sites/${site.id}/drive`);
+  const [birim, unter, prog] = ablageZiel();
+  // Vorhandenen Birim-Ordner wiederfinden, auch wenn er etwas anders geschrieben ist (z. B. „Spor Gezi“ statt „Spor ve Gezi“).
+  let birimOrdner = birim;
+  try {
+    const kinder = await graph(token, `/drives/${drive.id}/root/children?$select=name,folder&$top=200`);
+    const n = normal(birim);
+    const passt = (k) => { const m = normal(k.name); return m.length >= 3 && (m === n || m.startsWith(n) || n.startsWith(m)); };
+    const treffer = n && kinder.value.find((k) => k.folder && passt(k));
+    if (treffer) birimOrdner = treffer.name;
+  } catch (e) { /* dann wird der Ordner neu angelegt */ }
+  const pfad = [birimOrdner, unter, prog].map(encodeURIComponent).join("/") + "/" + encodeURIComponent(dateiname());
+  const blob = await excelBlob();
+  const item = await graph(token, `/drives/${drive.id}/root:/${pfad}:/content?@microsoft.graph.conflictBehavior=replace`,
+    { method: "PUT", body: blob, headers: { "Content-Type": blob.type } });
+  return { url: item.webUrl, pfad: [birimOrdner, unter, prog] };
+}
+
+function zeigeAblage() {
+  const box = $("#ablageStatus"); if (!box) return;
+  const knopf = $("[data-aktion=teams]");
+  const s = ablageStatus;
+  box.hidden = !s;
+  if (knopf) { knopf.disabled = !!s && s.art === "laeuft"; knopf.hidden = !!s && s.art === "ok"; }
+  if (!s) return;
+  box.className = "ablage-status " + s.art;
+  box.innerHTML = s.art === "ok"
+    ? `<strong>Abgelegt in Teams</strong><span>${esc(s.text)}</span>${s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">In Teams öffnen</a>` : ""}`
+    : esc(s.text);
+}
+function ablageFehler(e) {
+  const t = e && e.message === "lib" ? "Die Microsoft-Anmeldung konnte nicht geladen werden. Prüfe deine Internetverbindung."
+    : e && (e.status === 401 || e.status === 403) ? "Dein Konto darf in diesem Ordner nichts ablegen. Frag bitte den Başkan, oder speichere die Datei unten und schick sie."
+    : e && e.status === 404 ? "Der Teams-Ordner wurde nicht gefunden. Gib bitte dem Başkan Bescheid."
+    : e && e.message === "leer" ? "Dein Plan konnte nach der Anmeldung nicht wiederhergestellt werden. Tippe bitte noch einmal auf „In Teams ablegen“."
+    : e && e.errorCode === "user_cancelled" ? "Anmeldung abgebrochen."
+    : "Ablegen hat nicht geklappt. Versuch es noch einmal oder speichere die Datei unten.";
+  ablageStatus = { art: "fehler", text: t }; zeigeAblage();
+}
+async function ablegenMitToken(token) {
+  if (!hatInhalt()) throw new Error("leer");
+  ablageStatus = { art: "laeuft", text: "Datei wird in Teams abgelegt …" }; zeigeAblage();
+  const erg = await hochladen(token);
+  ablageStatus = { art: "ok", text: erg.pfad.join(" › "), url: erg.url }; zeigeAblage();
+  zeigeToast("In Teams abgelegt");
+}
+async function inTeamsAblegen() {
+  ablageStatus = { art: "laeuft", text: "Anmeldung wird vorbereitet …" }; zeigeAblage();
+  try {
+    const app = await msalHolen();
+    const token = await tokenHolen(app);
+    if (token) return await ablegenMitToken(token);
+    speichereSofort();
+    try { sessionStorage.setItem(ABLAGE_MERKER, "1"); } catch (e) { /* egal */ }
+    await app.loginRedirect({ scopes: ABLAGE_SCOPES, prompt: "select_account" });
+  } catch (e) { ablageFehler(e); }
+}
+/* Nach der Rückkehr von der Microsoft-Anmeldung geht es automatisch weiter. */
+async function ablageNachAnmeldung() {
+  let merker = null;
+  try { merker = sessionStorage.getItem(ABLAGE_MERKER); } catch (e) { /* egal */ }
+  const kommtZurueck = /[#&?](code|error)=/.test(location.hash + location.search);
+  if (!ablageAktiv() || (!merker && !kommtZurueck)) return;
+  try {
+    const app = await msalHolen();
+    const res = await app.handleRedirectPromise();
+    if (res && res.account) app.setActiveAccount(res.account);
+    if (!merker) return;
+    try { sessionStorage.removeItem(ABLAGE_MERKER); } catch (e) { /* egal */ }
+    if (schritt !== "fertig") gehe("fertig");
+    const token = (res && res.accessToken) || await tokenHolen(app);
+    if (!token) throw new Error("kein-token");
+    await ablegenMitToken(token);
+  } catch (e) {
+    if (schritt !== "fertig" && hatInhalt()) gehe("fertig");
+    ablageFehler(e);
+  }
 }
 
 /* ---------- Ausgabe ---------- */
@@ -1056,6 +1230,7 @@ document.addEventListener("click", (ev) => {
   const a = t.dataset.aktion;
   if (a === "start") return starte();
   if (a === "oeffnen") { const i = $("#dateiInput"); i.value = ""; return i.click(); }
+  if (a === "teams") return inTeamsAblegen();
   if (a === "excel") return speichereExcel(t);
   if (a === "teilen") return teileExcel();
   if (a === "kopieren") return kopiere();
@@ -1098,5 +1273,6 @@ $("#dateiInput").addEventListener("change", (ev) => oeffneDatei(ev.target.files[
 
 ladeEntwurf();
 render();
+ablageNachAnmeldung();
 </script>
 </body></html>
