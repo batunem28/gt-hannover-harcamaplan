@@ -2,46 +2,54 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
 <style>
-/* Layout: eine ruhige Spalte wie ein Fragebogen, oben der Rote Faden als Fortschritt, unten eine feste Weiter-Leiste. */
+/* Layout: dunkelgrüne Kopfleiste mit Vereinslogo, darunter eine Fragebogen-Spalte auf Sandstein mit weißen Feldern; unten eine feste Leiste mit Weiter. */
 :root {
-  --bg: #F4EFE6;          /* Sandstein */
-  --surface: #FBF8F2;
-  --ink: #141614;         /* Asphalt */
-  --ink-soft: #545c56;
-  --line: #d8d0c1;
-  --primary: #009872;     /* IGMG Grün für alle Hauptknöpfe */
-  --on-primary: #ffffff;
-  --hero-bg: #0B3D2E;     /* Eilenriede */
-  --hero-fg: #F4EFE6;
-  --hero-soft: rgba(244, 239, 230, .82);
-  --hero-line: rgba(244, 239, 230, .28);
-  --hero-cta: #8DCDBE;    /* Minze */
-  --on-hero-cta: #0B3D2E;
-  --accent: #009872;      /* IGMG Grün */
-  --accent-soft: rgba(0, 152, 114, .11);
-  --on-accent: #ffffff;
-  --thread: #E5402D;      /* Roter Faden: nur Linien */
-  --pos: #007a5c;
-  --neg: #b3311d;
-  --focus: rgba(0, 152, 114, .35);
+  --bg: #F4EFE6;            /* Sandstein */
+  --surface: #FFFFFF;
+  --ink: #141614;           /* Asphalt */
+  --ink-soft: #4b534d;
+  --placeholder: #9aa19b;
+  --line: #ddd5c6;
+  --card-border: #c4baa6;
+  --field-border: #8b928c;
+  --head-bg: #0B3D2E;       /* Eilenriede */
+  --head-fg: #FFFFFF;
+  --head-mint: #8DCDBE;     /* Minze */
+  --primary: #009872;       /* IGMG Grün */
+  --primary-hover: #00805f;
+  --on-primary: #FFFFFF;
+  --accent: #009872;
+  --accent-soft: #E1F2EA;
+  --on-accent: #FFFFFF;
+  --link: #006B4F;
+  --thread: #E5402D;        /* Roter Faden: nur Linien */
+  --pos: #006B4F;
+  --neg: #B3311D;
+  --neg-soft: #FBE9E5;
+  --focus: rgba(0, 152, 114, .4);
+  --shadow: 0 1px 2px rgba(20, 22, 20, .06), 0 3px 10px rgba(20, 22, 20, .05);
   --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
   --font-body: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #072319; --surface: #0B3D2E; --ink: #F4EFE6; --ink-soft: #b3c6bc; --line: #24533f;
-    --primary: #8DCDBE; --on-primary: #072319; --accent: #8DCDBE; --accent-soft: rgba(141, 205, 190, .13); --on-accent: #072319;
-    --thread: #F0563F; --pos: #8DCDBE; --neg: #ff8f7a; --focus: rgba(141, 205, 190, .4);
+    --bg: #061F17; --surface: #0D3A2C; --ink: #F7F3EC; --ink-soft: #C2D2CA; --placeholder: #7d9a8f;
+    --line: #275343; --card-border: #3D6B5A; --field-border: #7FA898;
+    --primary: #8DCDBE; --primary-hover: #a5dccf; --on-primary: #062118;
+    --accent: #8DCDBE; --accent-soft: #14503F; --on-accent: #062118; --link: #A6DCCF;
+    --pos: #8DCDBE; --neg: #FF8F7A; --neg-soft: #3a1d17; --focus: rgba(141, 205, 190, .45); --shadow: none;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #072319; --surface: #0B3D2E; --ink: #F4EFE6; --ink-soft: #b3c6bc; --line: #24533f;
-  --primary: #8DCDBE; --on-primary: #072319; --accent: #8DCDBE; --accent-soft: rgba(141, 205, 190, .13); --on-accent: #072319;
-  --thread: #F0563F; --pos: #8DCDBE; --neg: #ff8f7a; --focus: rgba(141, 205, 190, .4);
+  --bg: #061F17; --surface: #0D3A2C; --ink: #F7F3EC; --ink-soft: #C2D2CA; --placeholder: #7d9a8f;
+  --line: #275343; --card-border: #3D6B5A; --field-border: #7FA898;
+  --primary: #8DCDBE; --primary-hover: #a5dccf; --on-primary: #062118;
+  --accent: #8DCDBE; --accent-soft: #14503F; --on-accent: #062118; --link: #A6DCCF;
+  --pos: #8DCDBE; --neg: #FF8F7A; --neg-soft: #3a1d17; --focus: rgba(141, 205, 190, .45); --shadow: none;
   color-scheme: dark;
 }
 
@@ -55,9 +63,9 @@ body {
 }
 body::before {
   content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
-  z-index: 10; background: var(--bg);
+  z-index: 10; background: var(--head-bg);
 }
-button, input { font: inherit; color: inherit; }
+button, input, textarea { font: inherit; color: inherit; }
 button { cursor: pointer; }
 :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 
@@ -68,293 +76,279 @@ button { cursor: pointer; }
   padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
 
-/* Kopf */
-.top {
-  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
-  background: var(--bg);
+/* Kopfleiste */
+.kopf { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--head-bg); color: var(--head-fg); }
+.kopf-zeile { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 12px; }
+.logo { display: block; height: 40px; width: auto; max-width: 62vw; }
+.modus-pill {
+  font-size: 13px; font-weight: 600; letter-spacing: .02em; padding: 5px 11px; border-radius: 999px;
+  background: rgba(255, 255, 255, .14); color: var(--head-fg); white-space: nowrap;
 }
-.top .wrap { padding-block: 14px 10px; display: grid; gap: 10px; }
-.brandline {
-  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
-  font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
-  color: var(--ink-soft);
+.thread { position: relative; height: 4px; background: rgba(255, 255, 255, .16); }
+.thread-fill { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--thread); transition: width .35s cubic-bezier(.2, .7, .2, 1); }
+
+/* Startband */
+.band { background: var(--head-bg); color: var(--head-fg); border-bottom: 3px solid var(--thread); }
+.band .wrap { padding-block: 10px 30px; display: grid; gap: 16px; }
+.band .eyebrow { color: var(--head-mint); }
+.band h1 { color: var(--head-fg); }
+.band .lead { color: var(--head-fg); }
+.vorteile { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 16px; }
+.vorteile li { display: flex; gap: 10px; align-items: baseline; }
+.vorteile li::before {
+  content: ""; flex: none; width: 7px; height: 12px; margin-left: 3px; transform: translateY(-1px) rotate(45deg);
+  border: solid var(--head-mint); border-width: 0 2.5px 2.5px 0;
 }
-.brandline b { color: var(--ink); font-weight: 500; }
-.thread { position: relative; height: 2px; background: var(--line); border-radius: 2px; }
-.thread-fill {
-  position: absolute; inset: 0 auto 0 0; width: 0; background: var(--thread); border-radius: 2px;
-  transition: width .35s cubic-bezier(.2, .7, .2, 1);
+.entwurf { margin: 0; font-size: 15px; color: var(--head-fg); padding: 10px 12px; border-radius: 10px; background: rgba(255, 255, 255, .1); }
+.btn-hero {
+  width: 100%; min-height: 58px; font-size: 1.25rem; font-weight: 700;
+  background: #FFFFFF; color: #0B3D2E; box-shadow: 0 3px 0 rgba(0, 0, 0, .3);
 }
-.thread-fill::after {
-  content: ""; position: absolute; right: -4px; top: -3px; width: 8px; height: 8px;
-  border-radius: 50%; background: var(--thread);
-}
-.meta {
-  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
-  font-size: 13px; color: var(--ink-soft); min-height: 20px;
-}
-.meta .sums { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.btn-hero:hover { background: #E6F5EF; }
+.band .btn-text { color: var(--head-fg); text-decoration: underline; text-underline-offset: 3px; }
+.btn-hero-ghost { background: transparent; color: var(--head-fg); border-color: rgba(255, 255, 255, .55); }
+@media (min-width: 560px) { .btn-hero { width: auto; justify-self: start; padding: 0 36px; } }
 
 /* Inhalt */
 main { flex: 1; }
-main .wrap { padding-block: 20px 120px; }
-.screen { display: grid; gap: 22px; animation: rein .26s cubic-bezier(.2, .7, .2, 1); }
+.inhalt { padding-block: 22px 150px; }
+.screen { display: grid; gap: 20px; animation: rein .26s cubic-bezier(.2, .7, .2, 1); }
 @keyframes rein { from { transform: translateY(10px); } to { transform: none; } }
-@media (prefers-reduced-motion: reduce) {
-  .screen { animation: none; }
-  .thread-fill { transition: none; }
-}
+@media (prefers-reduced-motion: reduce) { .screen { animation: none; } .thread-fill { transition: none; } }
 .eyebrow {
-  font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
-  color: var(--accent); margin: 0;
+  font-family: var(--font-mono); font-size: 13px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--link); margin: 0;
 }
-h1, h2 {
-  font-family: var(--font-display); font-weight: 800; letter-spacing: -.02em; line-height: 1.08;
-  text-wrap: balance; margin: 0;
-}
-h1 { font-size: clamp(2.6rem, 9vw, 4rem); }
-h2 { font-size: clamp(1.7rem, 5.4vw, 2.35rem); }
-h3 { font-size: 1rem; font-weight: 600; margin: 0; }
-.lead { font-size: 1.075rem; color: var(--ink-soft); margin: 0; max-width: 34em; }
-.hint { font-size: 14px; color: var(--ink-soft); margin: 0; }
-.stack { display: grid; gap: 14px; }
+h1, h2 { font-family: var(--font-display); font-weight: 800; letter-spacing: -.02em; line-height: 1.08; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2.6rem, 10vw, 4rem); }
+h2 { font-size: clamp(1.75rem, 6vw, 2.4rem); color: var(--ink); }
+h3 { font-size: 1.0625rem; font-weight: 700; margin: 0; }
+.lead { font-size: 1.1rem; margin: 0; max-width: 34em; }
+.hint { font-size: 15px; color: var(--ink-soft); margin: 0; }
+.kopfbereich { display: grid; gap: 8px; }
+.stack { display: grid; gap: 18px; }
 
-.facts { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0; list-style: none; }
-.facts li {
-  font-family: var(--font-mono); font-size: 12.5px; padding: 5px 10px;
-  border: 1px solid var(--line); border-radius: 999px; color: var(--ink-soft);
+/* Boxen */
+.card {
+  padding: 18px; display: grid; gap: 10px;
+  background: var(--surface); border: 2px solid var(--card-border); border-radius: 16px; box-shadow: var(--shadow);
 }
+.card p { margin: 0; }
+.card.akzent { border-color: var(--accent); }
+.ablauf { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; counter-reset: s; }
+.ablauf li { display: grid; grid-template-columns: 30px 1fr; gap: 12px; align-items: start; counter-increment: s; }
+.ablauf li::before {
+  content: counter(s); width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--accent); color: var(--on-accent); font-weight: 700; font-size: 15px;
+}
+.ablauf strong { display: block; }
+.ablauf span { color: var(--ink-soft); font-size: 15px; }
 
 /* Felder */
-.field { display: grid; gap: 6px; }
-.field label { font-weight: 600; }
-.field .opt { font-weight: 400; color: var(--ink-soft); font-size: 14px; }
+.field { display: grid; gap: 7px; }
+.field > label { font-weight: 700; font-size: 1.0625rem; }
+.field .opt { font-weight: 400; color: var(--ink-soft); font-size: 15px; }
 .input {
-  width: 100%; font-size: 1.125rem; padding: 12px 14px;
-  background: var(--surface); border: 1.5px solid var(--line); border-radius: 10px;
-  transition: border-color .15s;
+  width: 100%; min-height: 54px; font-size: 1.125rem; padding: 12px 14px;
+  background: var(--surface); border: 2px solid var(--field-border); border-radius: 12px;
+  transition: border-color .15s, box-shadow .15s;
 }
-.input:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+.input::placeholder { color: var(--placeholder); opacity: 1; }
+.input:hover { border-color: var(--ink-soft); }
 .input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px var(--focus); }
-.input.err { border-color: var(--neg); }
-.errmsg { color: var(--neg); font-size: 14px; margin: 0; }
+.input.err { border-color: var(--neg); background: var(--neg-soft); }
+.errmsg { color: var(--neg); font-size: 15px; font-weight: 600; margin: 0; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .chip {
-  border: 1px solid var(--line); background: transparent; border-radius: 999px;
-  padding: 6px 12px; font-size: 14px;
+  min-height: 42px; padding: 0 14px; border-radius: 999px; font-size: 15px; font-weight: 500;
+  background: var(--surface); border: 2px solid var(--card-border);
 }
 .chip:hover { border-color: var(--accent); }
-.chip[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 
-/* Auswahlkarten */
+/* Auswahl */
 .choices { display: grid; gap: 12px; }
 .choice {
-  text-align: left; display: grid; gap: 4px; padding: 18px 18px 18px 54px; position: relative;
-  background: var(--surface); border: 1.5px solid var(--line); border-radius: 14px;
+  text-align: left; display: grid; gap: 4px; padding: 18px 18px 18px 56px; position: relative;
+  background: var(--surface); border: 2px solid var(--card-border); border-radius: 16px; box-shadow: var(--shadow);
   transition: border-color .15s, background-color .15s;
 }
-.choice:hover { border-color: color-mix(in srgb, var(--accent) 50%, var(--line)); }
-.choice strong { font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; letter-spacing: -.01em; }
+.choice:hover { border-color: var(--accent); }
+.choice strong { font-family: var(--font-display); font-weight: 700; font-size: 1.35rem; letter-spacing: -.01em; }
 .choice span { color: var(--ink-soft); font-size: 15px; }
 .choice::before {
-  content: ""; position: absolute; left: 18px; top: 21px; width: 20px; height: 20px;
-  border-radius: 50%; border: 1.5px solid var(--line); background: var(--bg);
+  content: ""; position: absolute; left: 18px; top: 22px; width: 22px; height: 22px;
+  border-radius: 50%; border: 2px solid var(--field-border); background: var(--surface);
 }
 .choice[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
-.choice[aria-pressed="true"]::before {
-  border-color: var(--accent); background: var(--accent);
-  box-shadow: inset 0 0 0 4px var(--bg);
-}
+.choice[aria-pressed="true"]::before { border-color: var(--accent); background: var(--accent); box-shadow: inset 0 0 0 4px var(--surface); }
 
 .tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 10px; }
 .tile {
-  text-align: left; display: grid; gap: 2px; align-content: start; padding: 14px 44px 14px 14px;
-  position: relative; background: var(--surface); border: 1.5px solid var(--line); border-radius: 12px;
+  text-align: left; display: grid; gap: 3px; align-content: start; padding: 15px 48px 15px 15px; position: relative;
+  background: var(--surface); border: 2px solid var(--card-border); border-radius: 14px; box-shadow: var(--shadow);
   transition: border-color .15s, background-color .15s;
 }
-.tile:hover { border-color: color-mix(in srgb, var(--accent) 50%, var(--line)); }
-.tile strong { font-weight: 600; font-size: 1.02rem; }
-.tile span { color: var(--ink-soft); font-size: 13.5px; line-height: 1.35; }
+.tile:hover { border-color: var(--accent); }
+.tile strong { font-weight: 700; font-size: 1.05rem; }
+.tile span { color: var(--ink-soft); font-size: 14px; line-height: 1.35; }
 .tile::after {
-  content: ""; position: absolute; right: 14px; top: 15px; width: 18px; height: 18px;
-  border-radius: 5px; border: 1.5px solid var(--line); background: var(--bg);
+  content: ""; position: absolute; right: 15px; top: 16px; width: 22px; height: 22px;
+  border-radius: 6px; border: 2px solid var(--field-border); background: var(--surface);
 }
 .tile[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
 .tile[aria-pressed="true"]::after { border-color: var(--accent); background: var(--accent); }
 .tile[aria-pressed="true"]::before {
-  content: ""; position: absolute; z-index: 1; right: 20px; top: 18px; width: 6px; height: 10px;
-  border: solid var(--on-accent); border-width: 0 2px 2px 0; transform: rotate(45deg);
+  content: ""; position: absolute; z-index: 1; right: 23px; top: 20px; width: 6px; height: 11px;
+  border: solid var(--on-accent); border-width: 0 2.5px 2.5px 0; transform: rotate(45deg);
 }
 
-/* Betragszeilen */
-.posten { display: grid; border-top: 1px solid var(--line); }
-.zeile { display: grid; gap: 8px; padding-block: 14px; border-bottom: 1px solid var(--line); }
+/* Beträge */
+.posten {
+  display: grid; background: var(--surface); border: 2px solid var(--card-border); border-radius: 16px;
+  box-shadow: var(--shadow); overflow: hidden;
+}
+.zeile { display: grid; gap: 8px; padding: 14px 16px; border-top: 1px solid var(--line); }
+.zeile:first-child, .untergruppe + .zeile { border-top: 0; }
 .zeile-haupt { display: flex; align-items: center; gap: 12px; }
 .zeile-text { flex: 1; min-width: 0; display: grid; gap: 1px; }
-.zeile-text label { font-weight: 600; }
-.zeile-text small { color: var(--ink-soft); font-size: 13.5px; }
-.zeile-text .plan { font-family: var(--font-mono); font-size: 12.5px; color: var(--ink-soft); }
-.betrag { position: relative; width: 9.5rem; flex: none; }
-.betrag .input {
-  text-align: right; padding-right: 32px; font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums; font-size: 1.05rem;
-}
+.zeile-text label { font-weight: 700; font-size: 1.0625rem; }
+.zeile-text small { color: var(--ink-soft); font-size: 14px; }
+.zeile-text .plan { font-family: var(--font-mono); font-size: 13px; color: var(--link); font-weight: 500; }
+.betrag { width: 9.5rem; flex: none; }
+.betrag .input { text-align: right; padding-right: 32px; font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 1.1rem; font-weight: 500; }
 .eur { position: relative; display: block; }
 .eur::after {
   content: "€"; position: absolute; right: 13px; top: 50%; transform: translateY(-50%);
-  color: var(--ink-soft); pointer-events: none; font-family: var(--font-mono);
+  color: var(--ink-soft); pointer-events: none; font-family: var(--font-mono); font-weight: 500;
 }
 .anzahl { width: 6.5rem; flex: none; }
-.anzahl .input { text-align: right; font-family: var(--font-mono); font-size: 1.05rem; }
-.mini-label { font-size: 13px; color: var(--ink-soft); display: block; margin-bottom: 4px; }
+.anzahl .input { text-align: right; font-family: var(--font-mono); font-size: 1.1rem; font-weight: 500; }
+.mini-label { font-size: 14px; font-weight: 600; color: var(--ink-soft); display: block; margin-bottom: 5px; }
 .paar { display: flex; gap: 10px; align-items: end; }
 .zeile-haupt.gestapelt { flex-direction: column; align-items: stretch; gap: 10px; }
 .gestapelt .anzahl { flex: 0 0 7.5rem; width: auto; }
 .gestapelt .betrag { flex: 1; width: auto; min-width: 0; }
 .notiz-btn {
-  justify-self: start; background: none; border: 0; padding: 0;
-  color: var(--accent); font-size: 14px; font-weight: 500;
+  justify-self: start; background: none; border: 0; padding: 4px 0; min-height: 32px;
+  color: var(--link); font-size: 14px; font-weight: 600;
 }
 .notiz-btn:hover { text-decoration: underline; }
-.notiz .input { font-size: 15px; padding: 9px 12px; }
-.untergruppe { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); padding-top: 18px; }
-
-.summe {
-  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
-  padding: 14px 0 0; font-weight: 600;
+.notiz .input { font-size: 16px; min-height: 46px; padding: 9px 12px; }
+.untergruppe {
+  font-family: var(--font-mono); font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--ink-soft); padding: 12px 16px 8px; background: var(--bg); border-top: 1px solid var(--line);
 }
-.summe .zahl { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 1.15rem; }
+.untergruppe:first-child { border-top: 0; }
+.summe {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding: 14px 16px; border-radius: 14px; background: var(--accent-soft); border: 2px solid var(--accent);
+  font-weight: 700;
+}
+.summe .zahl { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 1.25rem; font-weight: 600; }
 
 /* Übersicht */
 .bilanz { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-.kpi { padding: 14px; border: 1px solid var(--line); border-radius: 12px; display: grid; gap: 4px; min-width: 0; }
-.kpi span { font-size: 13px; color: var(--ink-soft); }
-.kpi strong { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 1.05rem; font-weight: 500; overflow-wrap: anywhere; }
-.kpi.ergebnis { border-color: currentColor; }
-.kpi.ergebnis.pos { color: var(--pos); }
-.kpi.ergebnis.neg { color: var(--neg); }
-.kpi.ergebnis span { color: inherit; }
-@media (max-width: 460px) {
-  .bilanz { grid-template-columns: 1fr 1fr; }
-  .kpi.ergebnis { grid-column: 1 / -1; }
+.kpi {
+  padding: 14px; border: 2px solid var(--card-border); border-radius: 14px; display: grid; gap: 4px; min-width: 0;
+  background: var(--surface); box-shadow: var(--shadow);
 }
-.tabelle-box { overflow-x: auto; }
+.kpi span { font-size: 14px; font-weight: 600; color: var(--ink-soft); }
+.kpi strong { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 1.1rem; font-weight: 600; overflow-wrap: anywhere; }
+.kpi.pos { border-color: var(--accent); background: var(--accent-soft); color: var(--pos); }
+.kpi.neg { border-color: var(--neg); background: var(--neg-soft); color: var(--neg); }
+.kpi.pos span, .kpi.neg span { color: inherit; }
+@media (max-width: 460px) { .bilanz { grid-template-columns: 1fr 1fr; } .kpi.ergebnis { grid-column: 1 / -1; } }
+.tabelle-box { overflow-x: auto; background: var(--surface); border: 2px solid var(--card-border); border-radius: 16px; box-shadow: var(--shadow); }
 table { width: 100%; border-collapse: collapse; font-size: 15px; }
-th, td { text-align: left; padding: 10px 6px; border-bottom: 1px solid var(--line); vertical-align: baseline; }
-th { font-size: 12px; font-weight: 500; color: var(--ink-soft); font-family: var(--font-mono); letter-spacing: .06em; text-transform: uppercase; }
+th, td { text-align: left; padding: 11px 12px; border-bottom: 1px solid var(--line); vertical-align: baseline; }
+th { font-size: 12px; font-weight: 600; color: var(--ink-soft); font-family: var(--font-mono); letter-spacing: .06em; text-transform: uppercase; }
 td.num, th.num { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
-tr.abschnitt td { font-weight: 600; padding-top: 18px; border-bottom-color: transparent; }
-tr.gesamt td { font-weight: 600; border-bottom: 2px solid var(--ink); }
-.linkbtn { background: none; border: 0; padding: 0; color: var(--accent); font-size: 14px; font-weight: 500; }
-.linkbtn:hover { text-decoration: underline; }
+tr.abschnitt td { font-weight: 700; padding-top: 16px; background: var(--bg); }
+tr.gesamt td { font-weight: 700; border-bottom: 2px solid var(--ink); }
+tbody tr:last-child td { border-bottom: 0; }
+.linkbtn { background: none; border: 0; padding: 6px 0; color: var(--link); font-size: 15px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.linkbtn:hover { text-decoration-thickness: 2px; }
 .tablink {
-  background: none; border: 0; padding: 0; text-align: left; color: var(--ink);
-  text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 4px; text-decoration-thickness: 1.5px;
+  background: none; border: 0; padding: 0; text-align: left; color: var(--ink); font-weight: 500;
+  text-decoration: underline; text-decoration-color: var(--card-border); text-underline-offset: 4px; text-decoration-thickness: 2px;
 }
 .tablink:hover { text-decoration-color: var(--accent); }
-.infos { display: grid; grid-template-columns: auto 1fr auto; gap: 6px 14px; margin: 0; font-size: 15px; }
+.infos { display: grid; grid-template-columns: auto 1fr auto; gap: 8px 14px; margin: 0; font-size: 15px; align-items: baseline; }
 .infos dt { color: var(--ink-soft); }
 .infos dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
 
-/* Karten & Buttons */
-.card { padding: 16px; border: 1.5px solid var(--line); border-radius: 14px; background: var(--surface); display: grid; gap: 10px; }
-.card.akzent { border-color: var(--accent); }
+/* Fertig */
+.erfolg { display: flex; align-items: center; gap: 14px; }
+.erfolg-icon { flex: none; width: 48px; height: 48px; border-radius: 50%; background: var(--accent); position: relative; }
+.erfolg-icon::after {
+  content: ""; position: absolute; left: 18px; top: 11px; width: 11px; height: 20px;
+  border: solid var(--on-accent); border-width: 0 3.5px 3.5px 0; transform: rotate(45deg);
+}
+.datei { font-family: var(--font-mono); font-size: 14px; overflow-wrap: anywhere; color: var(--ink-soft); margin: 0; }
+textarea.input { min-height: 140px; font-size: 15px; }
+
+/* Knöpfe */
 .btnrow { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  min-height: 48px; padding: 0 20px; border-radius: 12px; border: 1.5px solid transparent;
-  font-weight: 600; font-size: 1rem; text-decoration: none;
+  min-height: 50px; padding: 0 20px; border-radius: 12px; border: 2px solid transparent;
+  font-weight: 700; font-size: 1.0625rem; text-decoration: none;
   transition: transform .12s, background-color .15s, border-color .15s;
 }
 .btn:active { transform: scale(.98); }
-.btn-primary {
-  background: var(--primary); color: var(--on-primary);
-  font-size: 1.1875rem; font-weight: 700; min-height: 54px;
-  box-shadow: 0 2px 0 color-mix(in srgb, var(--primary) 70%, #000);
-}
-.btn-primary:hover { background: color-mix(in srgb, var(--primary) 88%, #000); }
-.btn-ghost { background: transparent; border-color: var(--line); color: var(--ink); }
-.btn-ghost:hover { border-color: var(--ink-soft); }
-.btn-text { background: transparent; color: var(--ink-soft); padding: 0 8px; }
+.btn-primary { background: var(--primary); color: var(--on-primary); font-size: 1.1875rem; min-height: 54px; box-shadow: 0 2px 0 rgba(0, 0, 0, .22); }
+.btn-primary:hover { background: var(--primary-hover); }
+.btn-ghost { background: var(--surface); border-color: var(--field-border); color: var(--ink); }
+.btn-ghost:hover { border-color: var(--ink); }
+.btn-text { background: transparent; color: var(--ink-soft); padding: 0 6px; font-weight: 600; }
 .btn-text:hover { color: var(--ink); }
-.btn[disabled] { opacity: .5; cursor: default; }
-.datei { font-family: var(--font-mono); font-size: 13.5px; overflow-wrap: anywhere; color: var(--ink-soft); }
-.schritte { margin: 0; padding-left: 1.3em; display: grid; gap: 8px; }
+.btn[disabled] { opacity: .55; cursor: default; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-
-/* Startseite */
-.hero {
-  position: relative; overflow: hidden; display: grid; gap: 16px;
-  background: var(--hero-bg); color: var(--hero-fg);
-  border-radius: 18px; padding: 26px 20px 22px;
-}
-.hero::before {
-  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; background: var(--thread);
-}
-.hero .eyebrow { color: var(--hero-cta); }
-.hero .lead { color: var(--hero-soft); }
-.hero .facts li { border-color: var(--hero-line); color: var(--hero-soft); }
-.hero .btn-text { color: var(--hero-soft); }
-.hero .btn-text:hover { color: var(--hero-fg); }
-.entwurf { margin: 0; color: var(--hero-soft); font-size: 15px; }
-.entwurf strong { color: var(--hero-fg); }
-.btn-hero {
-  width: 100%; min-height: 58px; font-size: 1.25rem; font-weight: 700;
-  background: var(--hero-cta); color: var(--on-hero-cta);
-  box-shadow: 0 3px 0 rgba(0, 0, 0, .25);
-}
-.btn-hero:hover { background: color-mix(in srgb, var(--hero-cta) 85%, #fff); }
-.btn-hero-ghost { background: transparent; color: var(--hero-fg); border-color: var(--hero-line); }
-@media (min-width: 560px) {
-  .hero { padding: 34px 32px 30px; }
-  .btn-hero { width: auto; justify-self: start; padding: 0 32px; }
-}
-.nebenbei { display: grid; gap: 6px; font-size: 15px; color: var(--ink-soft); }
-.nebenbei p { margin: 0; }
-.nebenbei strong { color: var(--ink); }
-.nebenbei .linkbtn { justify-self: start; font-size: 15px; margin-top: 2px; }
-
-.absender {
-  font-family: var(--font-mono); font-size: 12px; letter-spacing: .04em; color: var(--ink-soft);
-  border-top: 1px solid var(--line); padding-top: 14px; margin-top: 8px;
-}
 
 /* Fußleiste */
 .nav {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 6;
-  background: color-mix(in srgb, var(--bg) 92%, transparent);
-  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-  border-top: 1px solid var(--line);
-  box-shadow: 0 -6px 20px rgba(0, 0, 0, .07);
+  background: var(--surface); border-top: 2px solid var(--card-border);
+  box-shadow: 0 -6px 22px rgba(0, 0, 0, .08);
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
-.nav .wrap { display: flex; gap: 10px; padding-block: 12px; }
-.nav .btn-primary { flex: 1; }
-.nav .btn-ghost { min-width: 110px; }
+.nav-inhalt { display: grid; gap: 8px; padding-block: 10px 12px; }
+.nav-summe {
+  display: flex; justify-content: space-between; gap: 12px; font-size: 14px; color: var(--ink-soft);
+}
+.nav-summe b { font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--ink); font-weight: 600; }
+.nav-knoepfe { display: flex; gap: 10px; }
+.nav-knoepfe .btn-primary { flex: 1; }
+.nav-knoepfe .btn-ghost { min-width: 108px; }
 
 .toast {
-  position: fixed; left: 50%; bottom: calc(86px + env(safe-area-inset-bottom, 0px)); z-index: 20;
+  position: fixed; left: 50%; bottom: calc(110px + env(safe-area-inset-bottom, 0px)); z-index: 20;
   transform: translateX(-50%); max-width: min(92vw, 520px);
-  background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 10px;
-  font-size: 15px; box-shadow: 0 6px 24px rgba(0, 0, 0, .18);
+  background: var(--ink); color: var(--bg); padding: 11px 16px; border-radius: 12px;
+  font-size: 15px; font-weight: 500; box-shadow: 0 6px 24px rgba(0, 0, 0, .2);
 }
 </style>
 
 <div class="app">
-  <header class="top">
-    <div class="wrap">
-      <div class="brandline"><span><b>GT Hannover</b> · Harcamaplan</span><span id="modusLabel"></span></div>
-      <div class="thread" role="progressbar" aria-label="Fortschritt" aria-valuemin="0" aria-valuemax="100" id="thread"><div class="thread-fill" id="threadFill"></div></div>
-      <div class="meta"><span id="schrittInfo"></span><span class="sums" id="kopfSummen"></span></div>
+  <header class="kopf">
+    <div class="wrap kopf-zeile">
+      <img class="logo" src="data:image/png;base64,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" alt="Ortsverein Hannover Jugend | IGMG" width="454" height="97">
+      <span class="modus-pill" id="modusLabel" hidden></span>
     </div>
+    <div class="thread" role="progressbar" aria-label="Fortschritt" aria-valuemin="0" aria-valuemax="100" id="thread"><div class="thread-fill" id="threadFill"></div></div>
   </header>
   <main>
-    <div class="wrap"><div id="screen" class="screen" aria-live="polite"></div></div>
+    <section class="band" id="band" hidden><div class="wrap" id="bandInhalt"></div></section>
+    <div class="wrap inhalt"><div id="screen" class="screen" aria-live="polite"></div></div>
   </main>
-  <nav class="nav" aria-label="Schritte">
-    <div class="wrap">
-      <button class="btn btn-ghost" id="zurueck" type="button">Zurück</button>
-      <button class="btn btn-primary" id="weiter" type="button">Weiter</button>
+  <nav class="nav" id="nav" aria-label="Schritte">
+    <div class="wrap nav-inhalt">
+      <div class="nav-summe" id="navSumme" hidden></div>
+      <div class="nav-knoepfe">
+        <button class="btn btn-ghost" id="zurueck" type="button">Zurück</button>
+        <button class="btn btn-primary" id="weiter" type="button">Weiter</button>
+      </div>
     </div>
   </nav>
 </div>
@@ -617,6 +611,10 @@ function schritte() {
   return ["start", "modus", "programm", "verantwortlich", "einnahmen", "kategorien", ...st.kat.map((k) => "kat:" + k), "uebersicht", "fertig"];
 }
 const kategorie = (id) => KATEGORIEN.find((k) => k.id === id);
+function eyebrow(text) {
+  const l = schritte(); const i = l.indexOf(schritt);
+  return `<p class="eyebrow">Schritt ${i} von ${l.length - 2} · ${esc(text)}</p>`;
+}
 
 function gehe(ziel) {
   schritt = ziel; fehler = {}; neuBestaetigen = false;
@@ -673,7 +671,7 @@ function betragsZeile(p, opts = {}) {
       </div>
       ${notizOffen
         ? `<div class="notiz"><label class="visually-hidden" for="n${p.r}">Notiz zu ${esc(p.l)}</label><input class="input" id="n${p.r}" data-r="${p.r}" data-f="notiz" value="${esc(w.notiz || "")}" placeholder="${p.sonst ? "Was genau?" : "Notiz"}"></div>`
-        : `<button type="button" class="notiz-btn" data-notiz="${p.r}">+ Notiz hinzufügen</button>`}
+        : `<button type="button" class="notiz-btn" data-notiz="${p.r}">+ Notiz</button>`}
     </div>`;
 }
 
@@ -682,24 +680,26 @@ function kopfInfo() {
   const p = i <= 0 ? 0 : Math.round((i / (l.length - 1)) * 100);
   $("#threadFill").style.width = p + "%";
   $("#thread").setAttribute("aria-valuenow", p);
-  const innen = i > 0 && i < l.length - 1;
-  $("#schrittInfo").textContent = innen ? `Schritt ${i} von ${l.length - 2}` : (i === 0 ? "" : "Fertig");
-  $("#modusLabel").textContent = st.modus === "ist" ? "Abrechnung" : st.modus === "plan" ? "Planung" : "";
-  aktualisiereSummen();
-  const nav = $(".nav");
-  $("#zurueck").hidden = i === 0;
+  $("#thread").hidden = schritt === "start";
+  const pill = $("#modusLabel");
+  pill.textContent = st.modus === "ist" ? "Abrechnung" : st.modus === "plan" ? "Planung" : "";
+  pill.hidden = !st.modus || schritt === "start";
+  $("#nav").hidden = schritt === "start";
+  $("#zurueck").hidden = i <= 0;
   const wbtn = $("#weiter");
   wbtn.hidden = schritt === "fertig";
   wbtn.textContent = schritt === "kategorien" && !st.kat.length ? "Ohne Ausgaben weiter"
     : schritt === "uebersicht" ? "Datei erstellen" : "Weiter";
-  nav.hidden = schritt === "start";
+  aktualisiereSummen();
 }
 
 function aktualisiereSummen() {
   const s = summen(st);
   const ein = st.modus === "ist" ? s.istEin : s.sollEin, aus = st.modus === "ist" ? s.istAus : s.sollAus;
-  const zeigen = ["einnahmen", "kategorien", "uebersicht"].includes(schritt) || schritt.startsWith("kat:");
-  $("#kopfSummen").textContent = zeigen ? `Ein ${euro(ein)} · Aus ${euro(aus)}` : "";
+  const ns = $("#navSumme");
+  const zeigen = ["einnahmen", "kategorien"].includes(schritt) || schritt.startsWith("kat:");
+  ns.hidden = !zeigen;
+  if (zeigen) ns.innerHTML = `<span>Einnahmen <b>${euro(ein)}</b></span><span>Ausgaben <b>${euro(aus)}</b></span>`;
   document.querySelectorAll("[data-summe]").forEach((el) => {
     const k = kategorie(el.dataset.summe);
     if (k) el.textContent = euro(summe(st, k.items, feld()));
@@ -709,56 +709,65 @@ function aktualisiereSummen() {
 }
 
 /* ---------- Bildschirme ---------- */
+function startBand() {
+  const entwurf = entwurfZeit && hatInhalt();
+  const wann = entwurf ? new Date(entwurfZeit).toLocaleString("de-DE", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }) : "";
+  return `
+    <p class="eyebrow">Budget-Freigabe für eure Programme</p>
+    <h1>Harcamaplan</h1>
+    <p class="lead">Plane das Budget für euer Programm oder rechne es danach ab. Am Ende bekommst du die fertige Excel-Datei im offiziellen Format.</p>
+    <ul class="vorteile"><li>Dauert ca. 5 Minuten</li><li>Keine Anmeldung, keine App</li><li>Dein Entwurf wird automatisch gemerkt</li></ul>
+    ${entwurf ? `
+      <p class="entwurf">Du hast schon angefangen: <strong>${esc(st.programm || "Plan ohne Namen")}</strong>${st.modus ? " · " + (st.modus === "ist" ? "Abrechnung" : "Planung") : ""}, zuletzt ${esc(wann)} Uhr</p>
+      <button class="btn btn-hero" type="button" data-aktion="start">Weitermachen <span aria-hidden="true">→</span></button>
+      <div class="btnrow">
+        ${neuBestaetigen
+          ? `<span>Der angefangene Plan wird gelöscht.</span><button class="btn btn-hero-ghost" type="button" data-aktion="neu-ja">Ja, neu anfangen</button><button class="btn btn-text" type="button" data-aktion="neu-nein">Abbrechen</button>`
+          : `<button class="btn btn-text" type="button" data-aktion="neu">Stattdessen neuen Plan anfangen</button>`}
+      </div>`
+    : `<button class="btn btn-hero" type="button" data-aktion="start">Jetzt ausfüllen <span aria-hidden="true">→</span></button>`}`;
+}
+
 const BILDSCHIRME = {
   start() {
-    const entwurf = entwurfZeit && hatInhalt();
-    const wann = entwurf ? new Date(entwurfZeit).toLocaleString("de-DE", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }) : "";
     return `
-      <section class="hero">
-        <p class="eyebrow">Budget-Freigabe für eure Programme</p>
-        <h1>Harcamaplan</h1>
-        <p class="lead">Plane das Budget für euer Programm oder rechne es danach ab. Du beantwortest ein paar einfache Fragen, die Summen rechnen sich von selbst. Am Ende bekommst du die fertige Excel-Datei im offiziellen Format.</p>
-        <ul class="facts"><li>ca. 5 Minuten</li><li>ohne Anmeldung</li><li>Entwurf wird gemerkt</li></ul>
-        ${entwurf ? `
-          <p class="entwurf">Angefangen: <strong>${esc(st.programm || "Plan ohne Namen")}</strong>${st.modus ? " · " + (st.modus === "ist" ? "Abrechnung" : "Planung") : ""} · zuletzt ${esc(wann)}</p>
-          <button class="btn btn-hero" type="button" data-aktion="start">Weitermachen <span aria-hidden="true">→</span></button>
-          <div class="btnrow">
-            ${neuBestaetigen
-              ? `<span class="entwurf">Der angefangene Plan wird gelöscht.</span><button class="btn btn-hero-ghost" type="button" data-aktion="neu-ja">Ja, neu anfangen</button><button class="btn btn-text" type="button" data-aktion="neu-nein">Abbrechen</button>`
-              : `<button class="btn btn-text" type="button" data-aktion="neu">Stattdessen neuen Plan anfangen</button>`}
-          </div>`
-        : `<button class="btn btn-hero" type="button" data-aktion="start">Jetzt ausfüllen <span aria-hidden="true">→</span></button>`}
-      </section>
-      <div class="nebenbei">
-        <p><strong>Für einen neuen Plan brauchst du keine Datei.</strong></p>
-        <p>Nur für die Abrechnung nach dem Programm: Wenn du schon eine Harcama-Datei von der Planung hast, kannst du sie öffnen und weiter ausfüllen.</p>
-        <button class="linkbtn" type="button" data-aktion="oeffnen">Vorhandene Datei öffnen (optional)</button>
+      <div class="card">
+        <h3>So funktioniert’s</h3>
+        <ol class="ablauf">
+          <li><div><strong>Fragen beantworten</strong><span>Programm, Datum und wer verantwortlich ist.</span></div></li>
+          <li><div><strong>Beträge eintragen</strong><span>Einnahmen und Ausgaben, die Summen rechnen sich von selbst.</span></div></li>
+          <li><div><strong>Excel-Datei speichern und schicken</strong><span>An den Kassenwart zur Budget-Freigabe.</span></div></li>
+        </ol>
       </div>
-      <p class="absender">Ortsverein Hannover Jugend | IGMG</p>`;
+      <div class="card">
+        <h3>Brauche ich eine Excel-Datei?</h3>
+        <p>Nein. Für einen neuen Plan füllst du einfach alles hier aus. Die Excel-Datei bekommst du am Ende.</p>
+        <p class="hint">Nur für die Abrechnung nach dem Programm kannst du die Datei von deiner Planung öffnen und weiter ausfüllen.</p>
+        <button class="linkbtn" type="button" data-aktion="oeffnen" style="justify-self:start">Planungs-Datei öffnen (optional)</button>
+      </div>`;
   },
 
   modus() {
     const k = (id, titel, text) => `<button type="button" class="choice" data-modus="${id}" aria-pressed="${st.modus === id}"><strong>${titel}</strong><span>${text}</span></button>`;
     return `
-      <p class="eyebrow">Worum geht es?</p>
-      <h2>Was möchtest du machen?</h2>
+      <div class="kopfbereich">${eyebrow("Worum geht es?")}<h2>Was möchtest du machen?</h2></div>
       <div class="choices" role="group" aria-label="Art des Plans">
         ${k("plan", "Planung", "Vor dem Programm. Du schätzt, was ihr einnehmt und ausgebt, damit das Budget freigegeben werden kann.")}
         ${k("ist", "Abrechnung", "Nach dem Programm. Du trägst ein, was wirklich eingenommen und ausgegeben wurde.")}
       </div>
       ${fehler.modus ? `<p class="errmsg">${esc(fehler.modus)}</p>` : ""}
       ${st.modus === "ist" && !hatSoll() ? `
-        <div class="nebenbei">
-          <p><strong>Optional:</strong> Hast du die Excel-Datei von der Planung? Dann siehst du bei jedem Posten, was geplant war. Ohne Datei tippst du einfach unten auf „Weiter“.</p>
-          <button class="linkbtn" type="button" data-aktion="oeffnen">Planungs-Datei öffnen</button>
+        <div class="card">
+          <h3>Optional: Datei von der Planung</h3>
+          <p class="hint">Wenn du sie hast, siehst du bei jedem Posten, was geplant war. Ohne Datei tippst du einfach unten auf „Weiter“.</p>
+          <button class="linkbtn" type="button" data-aktion="oeffnen" style="justify-self:start">Planungs-Datei öffnen</button>
         </div>` : ""}
       ${st.modus === "ist" && hatSoll() ? `<p class="hint">Die geplanten Beträge sind geladen. Du siehst sie bei jedem Posten als Hinweis.</p>` : ""}`;
   },
 
   programm() {
     return `
-      <p class="eyebrow">Das Programm</p>
-      <h2>Um welches Programm geht es?</h2>
+      <div class="kopfbereich">${eyebrow("Das Programm")}<h2>Um welches Programm geht es?</h2></div>
       <div class="stack">
         <div class="field">
           <label for="programm">Name des Programms</label>
@@ -774,19 +783,18 @@ const BILDSCHIRME = {
 
   verantwortlich() {
     return `
-      <p class="eyebrow">Zuständigkeit</p>
-      <h2>Wer ist verantwortlich?</h2>
+      <div class="kopfbereich">${eyebrow("Zuständigkeit")}<h2>Wer ist verantwortlich?</h2></div>
       <div class="stack">
         <div class="field">
           <label for="abteilung">Abteilung (Birim)</label>
-          <input class="input" id="abteilung" data-k="abteilung" value="${esc(st.abteilung)}" placeholder="z. B. Spor ve Gezi" autocomplete="off" data-autofokus>
-          <div class="chips" role="group" aria-label="Vorschläge">
+          <div class="chips" role="group" aria-label="Birim auswählen">
             ${ABTEILUNGEN.map((a) => `<button type="button" class="chip" data-abteilung="${esc(a)}" aria-pressed="${st.abteilung === a}">${esc(a)}</button>`).join("")}
           </div>
+          <input class="input" id="abteilung" data-k="abteilung" value="${esc(st.abteilung)}" placeholder="oder selbst eintippen" autocomplete="off">
         </div>
         <div class="field">
           <label for="person">Verantwortliche Person</label>
-          <input class="input ${fehler.person ? "err" : ""}" id="person" data-k="person" value="${esc(st.person)}" placeholder="Vor- und Nachname" autocomplete="name">
+          <input class="input ${fehler.person ? "err" : ""}" id="person" data-k="person" value="${esc(st.person)}" placeholder="Vor- und Nachname" autocomplete="name" data-autofokus>
           ${fehler.person ? `<p class="errmsg">${esc(fehler.person)}</p>` : ""}
         </div>
       </div>`;
@@ -795,9 +803,8 @@ const BILDSCHIRME = {
   einnahmen() {
     const plan = st.modus !== "ist";
     return `
-      <p class="eyebrow">Einnahmen</p>
-      <h2>${plan ? "Mit welchen Einnahmen rechnet ihr?" : "Was ist tatsächlich reingekommen?"}</h2>
-      <p class="hint">Trag nur ein, was passt. Leere Felder zählen als 0.</p>
+      <div class="kopfbereich">${eyebrow("Einnahmen")}<h2>${plan ? "Mit welchen Einnahmen rechnet ihr?" : "Was ist tatsächlich reingekommen?"}</h2>
+      <p class="hint">Trag nur ein, was passt. Leere Felder zählen als 0.</p></div>
       <div class="posten">
         ${EINNAHMEN.map((p, i) => betragsZeile(p, { fokus: i === 0 })).join("")}
         <div class="untergruppe">Teilnehmer</div>
@@ -808,9 +815,8 @@ const BILDSCHIRME = {
 
   kategorien() {
     return `
-      <p class="eyebrow">Ausgaben</p>
-      <h2>Wofür gebt ihr Geld aus?</h2>
-      <p class="hint">Tippe alles an, was bei eurem Programm anfällt. Danach fragen wir die Beträge Schritt für Schritt ab.</p>
+      <div class="kopfbereich">${eyebrow("Ausgaben")}<h2>Wofür gebt ihr Geld aus?</h2>
+      <p class="hint">Tippe alles an, was bei eurem Programm anfällt. Danach fragen wir die Beträge Schritt für Schritt ab.</p></div>
       <div class="tiles" role="group" aria-label="Kostenarten">
         ${KATEGORIEN.map((k) => `<button type="button" class="tile" data-kat="${k.id}" aria-pressed="${st.kat.includes(k.id)}"><strong>${esc(k.name)}</strong><span>${esc(k.bsp)}</span></button>`).join("")}
       </div>
@@ -828,9 +834,8 @@ const BILDSCHIRME = {
       ? k.gruppen.map((g) => `<div class="untergruppe">${esc(g.t)}</div>${g.items.filter(sichtbar).map(zeile).join("")}`).join("")
       : k.items.filter(sichtbar).map(zeile).join("");
     return `
-      <p class="eyebrow">Ausgaben · ${nr} von ${st.kat.length}</p>
-      <h2>${esc(k.name)}</h2>
-      <p class="hint">${plan ? "Wie viel plant ihr dafür ein?" : "Wie viel wurde wirklich ausgegeben?"} Leere Felder zählen als 0.</p>
+      <div class="kopfbereich">${eyebrow(`Ausgaben ${nr} von ${st.kat.length}`)}<h2>${esc(k.name)}</h2>
+      <p class="hint">${plan ? "Wie viel plant ihr dafür ein?" : "Wie viel wurde wirklich ausgegeben?"} Leere Felder zählen als 0.</p></div>
       <div class="posten">${inhalt}</div>
       <div class="summe"><span>Summe ${esc(k.name)}</span><span class="zahl" data-summe="${k.id}"></span></div>`;
   },
@@ -851,18 +856,19 @@ const BILDSCHIRME = {
     const gesamt = (titel, so, is) => `<tr class="gesamt"><td>${titel}</td>${vergleich ? zelle(so) + zelle(is) : zelle(ist ? is : so)}</tr>`;
     const spalten = vergleich ? 3 : 2;
     return `
-      <p class="eyebrow">Übersicht</p>
-      <h2>Passt alles?</h2>
+      <div class="kopfbereich">${eyebrow("Übersicht")}<h2>Passt alles?</h2></div>
       <div class="bilanz">
         <div class="kpi"><span>Einnahmen</span><strong>${euro(ein)}</strong></div>
         <div class="kpi"><span>Ausgaben</span><strong>${euro(aus)}</strong></div>
         <div class="kpi ergebnis ${erg >= 0 ? "pos" : "neg"}"><span>${erg >= 0 ? "Überschuss" : "Fehlbetrag"}</span><strong>${euro(Math.abs(erg))}</strong></div>
       </div>
       ${erg < 0 ? `<p class="hint">Die Ausgaben sind höher als die Einnahmen. Klärt vorher, wie der Fehlbetrag gedeckt wird.</p>` : ""}
-      <dl class="infos">
-        <dt>Programm</dt><dd>${esc(st.programm)}${st.datum ? " · " + esc(datumDE(st.datum)) : ""}</dd><dd><button type="button" class="linkbtn" data-gehe="programm">Ändern</button></dd>
-        <dt>Verantwortlich</dt><dd>${esc(st.person)}${st.abteilung ? " · " + esc(st.abteilung) : ""}</dd><dd><button type="button" class="linkbtn" data-gehe="verantwortlich">Ändern</button></dd>
-      </dl>
+      <div class="card">
+        <dl class="infos">
+          <dt>Programm</dt><dd>${esc(st.programm)}${st.datum ? " · " + esc(datumDE(st.datum)) : ""}</dd><dd><button type="button" class="linkbtn" data-gehe="programm">Ändern</button></dd>
+          <dt>Verantwortlich</dt><dd>${esc(st.person)}${st.abteilung ? " · " + esc(st.abteilung) : ""}</dd><dd><button type="button" class="linkbtn" data-gehe="verantwortlich">Ändern</button></dd>
+        </dl>
+      </div>
       <p class="hint">Tippe auf einen Posten, um ihn zu ändern.</p>
       <div class="tabelle-box">
         <table>
@@ -882,28 +888,25 @@ const BILDSCHIRME = {
 
   fertig() {
     return `
-      <p class="eyebrow">Geschafft</p>
-      <h2>Dein Harcamaplan ist fertig.</h2>
+      <div class="erfolg"><span class="erfolg-icon" aria-hidden="true"></span><h2>Dein Harcamaplan ist fertig.</h2></div>
       <div class="card akzent">
-        <h3>Excel-Datei im offiziellen Format</h3>
+        <h3>1. Excel-Datei speichern</h3>
         <p class="datei" id="dateiname">${esc(dateiname())}</p>
         <div class="btnrow">
           <button class="btn btn-primary" type="button" data-aktion="excel">Excel-Datei speichern</button>
-          ${kannTeilen() ? `<button class="btn btn-ghost" type="button" data-aktion="teilen">Datei teilen</button>` : ""}
+          ${kannTeilen() ? `<button class="btn btn-ghost" type="button" data-aktion="teilen">Per WhatsApp & Co. teilen</button>` : ""}
         </div>
         <p class="errmsg" id="dlFehler" hidden></p>
       </div>
-      <div class="stack">
-        <h3>So geht es weiter</h3>
-        <ol class="schritte">
-          <li>Schick die Excel-Datei an den Kassenwart (Muhasebe) oder den Vorstand zur Budget-Freigabe.</li>
-          <li>Nach dem Programm öffnest du die Datei hier wieder, wählst „Abrechnung“ und trägst die tatsächlichen Beträge ein.</li>
-        </ol>
+      <div class="card">
+        <h3>2. An den Kassenwart schicken</h3>
+        <p>Schick die Excel-Datei an den Kassenwart (Muhasebe) oder den Vorstand zur Budget-Freigabe.</p>
+        <p class="hint">Nach dem Programm öffnest du die Datei hier wieder, wählst „Abrechnung“ und trägst die tatsächlichen Beträge ein.</p>
       </div>
       <div class="card">
-        <h3>Kurz per WhatsApp schicken?</h3>
-        <p class="hint">Kopiert eine kurze Zusammenfassung mit allen Summen, die du in jeden Chat einfügen kannst.</p>
-        <div class="btnrow"><button class="btn btn-ghost" type="button" data-aktion="kopieren">Zusammenfassung kopieren</button></div>
+        <h3>Kurz-Zusammenfassung für den Chat</h3>
+        <p class="hint">Kopiert alle Summen als Text, den du in WhatsApp einfügen kannst.</p>
+        <button class="btn btn-ghost" type="button" data-aktion="kopieren" style="justify-self:start">Zusammenfassung kopieren</button>
         <textarea id="kopierFeld" class="input" rows="6" readonly hidden></textarea>
       </div>
       <div class="btnrow">
@@ -916,6 +919,9 @@ const BILDSCHIRME = {
 
 function render() {
   const [name, arg] = schritt.split(":");
+  const band = $("#band");
+  band.hidden = name !== "start";
+  if (name === "start") $("#bandInhalt").innerHTML = startBand();
   $("#screen").innerHTML = BILDSCHIRME[name](arg);
   const scr = $("#screen"); scr.style.animation = "none"; void scr.offsetWidth; scr.style.animation = "";
   kopfInfo();
@@ -1062,7 +1068,7 @@ document.addEventListener("input", (ev) => {
   if (el.dataset.k) {
     st[el.dataset.k] = el.value;
     if (el.dataset.k === "abteilung") document.querySelectorAll("[data-abteilung]").forEach((c) => c.setAttribute("aria-pressed", c.dataset.abteilung === el.value));
-    if (fehler[el.dataset.k] && el.value.trim()) { el.classList.remove("err"); }
+    if (fehler[el.dataset.k] && el.value.trim()) el.classList.remove("err");
     return merke();
   }
   if (el.dataset.r) {
