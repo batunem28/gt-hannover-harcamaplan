@@ -908,10 +908,10 @@ const BILDSCHIRME = {
       <div class="card akzent">
         <h3>In Teams ablegen</h3>
         <p class="hint">Der Plan landet automatisch in diesem Ordner:</p>
-        <p class="ablage-ziel">${ablageZiel().map(esc).join(' <span aria-hidden="true">›</span> ')}</p>
+        <p class="ablage-ziel">${[M365.kanalordner, ...ablageZiel()].filter(Boolean).map(esc).join(' <span aria-hidden="true">›</span> ')}</p>
         <button class="btn btn-primary" type="button" data-aktion="teams">Mit GT-Konto in Teams ablegen</button>
         <div id="ablageStatus" class="ablage-status" role="status" hidden></div>
-        <p class="hint">${empfaenger} sehen ihn dann direkt in Teams. Beim ersten Mal meldest du dich mit deinem Microsoft-Konto von GT Hannover an.</p>
+        <p class="hint">${empfaenger} sehen ihn dann direkt in Teams unter „Freigegeben“. Beim ersten Mal meldest du dich mit deinem Microsoft-Konto von GT Hannover an.</p>
       </div>
       <div class="card">
         <h3>Oder: Excel-Datei aufs Gerät speichern</h3>
@@ -975,7 +975,9 @@ const M365 = {
   clientId: "b7c3c3d3-7d8d-49fc-a7db-aff784de2079",   // App „Harcamaplan GT Hannover“ in Entra
   tenantId: "3d0e3eed-8a5a-421c-8d7f-20a653e2a93d",   // Bildungs- und Interkulturelles Zentrum e.V.
   seite: "https://bizev.sharepoint.com/sites/GTHannover2", // Team „GT Hannover“
+  kanalordner: "SYK",        // Ordner des Kanals, den Teams unter „Freigegeben“ zeigt; darin liegen die Birim-Ordner
   unterordner: "Programmformulare",
+  ordnerAlias: { "Orta Öğretim": "OÖK" }, // Birim-Ordner, die in Teams ganz anders heißen
 };
 const ABLAGE_SCOPES = ["Files.ReadWrite.All", "Sites.Read.All"];
 const MSAL_URL = "https://cdn.jsdelivr.net/npm/@azure/msal-browser@3.30.0/lib/msal-browser.min.js";
@@ -992,7 +994,11 @@ function programmOrdner() {
   const jahr = (st.datum || "").slice(2, 4) || String(new Date().getFullYear()).slice(2);
   return /\b(20)?\d{2}$/.test(name) ? name : `${name} ${jahr}`;
 }
-const ablageZiel = () => [ordnerName(st.abteilung) || "Ohne Birim", M365.unterordner, programmOrdner()];
+function birimName() {
+  const b = ordnerName(st.abteilung);
+  return M365.ordnerAlias[b] || b || "Ohne Birim";
+}
+const ablageZiel = () => [birimName(), M365.unterordner, programmOrdner()];
 
 function ladeSkript(src) {
   return new Promise((ok, nein) => {
@@ -1025,20 +1031,23 @@ async function hochladen(token) {
   const site = await graph(token, `/sites/${u.hostname}:${u.pathname.replace(/\/$/, "")}`);
   const drive = await graph(token, `/sites/${site.id}/drive`);
   const [birim, unter, prog] = ablageZiel();
+  const kanal = M365.kanalordner;
+  const basis = kanal ? `/drives/${drive.id}/root:/${encodeURIComponent(kanal)}:` : `/drives/${drive.id}/root`;
   // Vorhandenen Birim-Ordner wiederfinden, auch wenn er etwas anders geschrieben ist (z. B. „Spor Gezi“ statt „Spor ve Gezi“).
   let birimOrdner = birim;
   try {
-    const kinder = await graph(token, `/drives/${drive.id}/root/children?$select=name,folder&$top=200`);
+    const kinder = await graph(token, `${basis}/children?$select=name,folder&$top=200`);
     const n = normal(birim);
     const passt = (k) => { const m = normal(k.name); return m.length >= 3 && (m === n || m.startsWith(n) || n.startsWith(m)); };
     const treffer = n && kinder.value.find((k) => k.folder && passt(k));
     if (treffer) birimOrdner = treffer.name;
   } catch (e) { /* dann wird der Ordner neu angelegt */ }
-  const pfad = [birimOrdner, unter, prog].map(encodeURIComponent).join("/") + "/" + encodeURIComponent(dateiname());
+  const ordner = [kanal, birimOrdner, unter, prog].filter(Boolean);
+  const pfad = ordner.map(encodeURIComponent).join("/") + "/" + encodeURIComponent(dateiname());
   const blob = await excelBlob();
   const item = await graph(token, `/drives/${drive.id}/root:/${pfad}:/content?@microsoft.graph.conflictBehavior=replace`,
     { method: "PUT", body: blob, headers: { "Content-Type": blob.type } });
-  return { url: item.webUrl, pfad: [birimOrdner, unter, prog] };
+  return { url: item.webUrl, pfad: ordner };
 }
 
 function zeigeAblage() {
